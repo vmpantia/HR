@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HR.BAL.Models;
+using HR.Common.Utilities;
 using HR.DAL.DataAccess.Entities;
 
 namespace HR.BAL.Mapper
@@ -10,7 +11,7 @@ namespace HR.BAL.Mapper
         {
             CreateMap<Employee, EmployeeDTO>()
                .ForMember(dest => dest.StatusDescription, 
-                          opts => opts.MapFrom(org => org.Status == 1 ? "Tanga" : "Bobo"))
+                          opts => opts.MapFrom(org => Parser.ParseStatus(org.Status)))
                .ReverseMap();
         }
     }
