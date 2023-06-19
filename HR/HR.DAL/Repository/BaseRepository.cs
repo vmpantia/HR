@@ -1,4 +1,5 @@
-﻿using HR.DAL.Contractors;
+﻿using HR.Common.Constants;
+using HR.DAL.Contractors;
 using HR.DAL.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -41,7 +42,7 @@ namespace HR.DAL.Repository
         {
             var result = await _table.FindAsync(id);
             if (result == null)
-                throw new Exception("No record is found for ID: " + id);
+                throw new Exception(string.Format(ErrorMessage.NO_RECORD_FOUND_BY_ID, id));
 
             return result;
         }
