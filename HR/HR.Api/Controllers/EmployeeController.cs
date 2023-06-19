@@ -11,12 +11,12 @@ namespace HR.Api.Controllers
 
         public EmployeeController(IEmployeeService employee) => _employee = employee;
 
-        [HttpGet]
+        [HttpGet("GetEmployees1")]
         public IActionResult GetEmployees1()
         {
             return Ok(_employee.GetEmployees1());
         }
-        [HttpGet]
+        [HttpGet("GetEmployees2")]
         public IActionResult GetEmployees2()
         {
             return Ok(_employee.GetEmployees2());

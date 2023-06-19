@@ -6,9 +6,12 @@ namespace HR.BAL.Mapper
 {
     public class AutoMapperProfile : Profile
     {
-        protected AutoMapperProfile()
+        public AutoMapperProfile()
         {
-            CreateMap<Employee, EmployeeDTO>().ReverseMap();
+            CreateMap<Employee, EmployeeDTO>()
+               .ForMember(dest => dest.StatusDescription, 
+                          opts => opts.MapFrom(org => org.Status == 1 ? "Tanga" : "Bobo"))
+               .ReverseMap();
         }
     }
 }

@@ -31,6 +31,7 @@ namespace HR.BAL.Models
 
         [Range(-1, 2)]
         public int Status { get; set; } /* [-1] - Invalid [0] - Enabled [1] - Disabled [2] - For Deletion  */
+        public string? StatusDescription { get; set; } /* [-1] - Invalid [0] - Enabled [1] - Disabled [2] - For Deletion  */
 
         public Guid CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
