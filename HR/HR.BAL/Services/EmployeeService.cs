@@ -16,36 +16,10 @@ namespace HR.BAL.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<EmployeeDTO> GetEmployees1()
+        public IEnumerable<EmployeeDTO> GetEmployees()
         {
-            //var employees = _uow.EmployeeRepository.GetAll();
-            var employees = new List<Employee>
-            {
-                new Employee
-                {
-                    InternalID = Guid.NewGuid(),
-                    FirstName = "Vincent",
-                    LastName = "Pantia"
-                }
-            };
-
+            var employees = _uow.EmployeeRepository.GetAll();
             return _mapper.Map<IEnumerable<EmployeeDTO>>(employees);
-        }
-
-        public IEnumerable<Employee> GetEmployees2()
-        {
-            //var employees = _uow.EmployeeRepository.GetAll();
-            var employees = new List<EmployeeDTO>
-            {
-                new EmployeeDTO
-                {
-                    InternalID = Guid.NewGuid(),
-                    FirstName = "Vincent Test",
-                    LastName = "Pantia Test"
-                }
-            };
-
-            return _mapper.Map<IEnumerable<Employee>>(employees);
         }
     }
 }

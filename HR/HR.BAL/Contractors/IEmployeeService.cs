@@ -5,7 +5,6 @@ namespace HR.BAL.Contractors
 {
     public interface IEmployeeService
     {
-        IEnumerable<EmployeeDTO> GetEmployees1();
-        IEnumerable<Employee> GetEmployees2();
+        IEnumerable<EmployeeDTO> GetEmployees();
     }
 }
