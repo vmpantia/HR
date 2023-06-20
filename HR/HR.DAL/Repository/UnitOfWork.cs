@@ -2,6 +2,7 @@
 using HR.DAL.Contractors;
 using HR.DAL.DataAccess;
 using HR.DAL.DataAccess.Entities;
+using HR.DAL.Exceptions;
 
 namespace HR.DAL.Repository
 {
@@ -26,7 +27,7 @@ namespace HR.DAL.Repository
         {
             var result = await _db.SaveChangesAsync();
             if (result <= 0)
-                throw new Exception(Message.ERROR_SAVING);
+                throw new CustomException(Message.ERROR_SAVING);
         }
     }
 }

@@ -1,6 +1,8 @@
+using Azure.Core;
 using HR.BAL.Contractors;
 using HR.BAL.Models.Request;
 using HR.Common.Constants;
+using HR.DAL.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HR.Api.Controllers
@@ -16,29 +18,57 @@ namespace HR.Api.Controllers
         [HttpGet("GetEmployees")]
         public IActionResult GetEmployees()
         {
-            var response = _employee.GetEmployees();
-            return Ok(response);
+            try
+            {
+                var response = _employee.GetEmployees();
+                return Ok(response);
+            }
+            catch (CustomException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("GetEmployeeByID")]
         public IActionResult GetEmployeeByID(Guid internalID)
         {
-            var response = _employee.GetEmployeeByID(internalID);
-            return Ok(response);
+            try
+            {
+                var response = _employee.GetEmployeeByID(internalID);
+                return Ok(response);
+            }
+            catch (CustomException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("SaveEmployee")]
         public async Task<IActionResult> SaveEmployeeAsync(SaveEmployeeRequest request)
         {
-            await _employee.SaveEmployeeAsync(request);
-            return Ok(Message.SUCCESS_SAVING_EMPLOYEE);
+            try
+            {
+                await _employee.SaveEmployeeAsync(request);
+                return Ok(Message.SUCCESS_SAVING_EMPLOYEE);
+            }
+            catch(CustomException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("DeleteEmployee")]
         public async Task<IActionResult> DeleteEmployeeAsync(DeleteEmployeeRequest request)
         {
-            await _employee.DeleteEmployeeAsync(request);
-            return Ok(Message.SUCCESS_DELETING_EMPLOYEE);
+            try
+            {
+                await _employee.DeleteEmployeeAsync(request);
+                return Ok(Message.SUCCESS_DELETING_EMPLOYEE);
+            }
+            catch(CustomException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

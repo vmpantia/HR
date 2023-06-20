@@ -5,6 +5,7 @@ using HR.BAL.Models.Request;
 using HR.Common.Constants;
 using HR.DAL.Contractors;
 using HR.DAL.DataAccess.Entities;
+using HR.DAL.Exceptions;
 
 namespace HR.BAL.Services
 {
@@ -33,7 +34,7 @@ namespace HR.BAL.Services
         public async Task SaveEmployeeAsync(SaveEmployeeRequest request)
         {
             if (request == null)
-                throw new Exception(Message.ERROR_REQUEST_NULL);
+                throw new CustomException(Message.ERROR_REQUEST_NULL);
 
             var isAdd = request.inputEmployee.InternalID == Guid.Empty;
             
@@ -61,7 +62,7 @@ namespace HR.BAL.Services
         public async Task DeleteEmployeeAsync(DeleteEmployeeRequest request)
         {
             if (request == null)
-                throw new Exception(Message.ERROR_REQUEST_NULL);
+                throw new CustomException(Message.ERROR_REQUEST_NULL);
 
             //Delete employee information
             _uow.EmployeeRepository.Delete(request.InternalIDToDelete);

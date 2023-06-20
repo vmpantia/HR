@@ -1,6 +1,7 @@
 ﻿using HR.Common.Constants;
 using HR.DAL.Contractors;
 using HR.DAL.DataAccess;
+using HR.DAL.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -48,7 +49,7 @@ namespace HR.DAL.Repository
         {
             var result = _table.Find(id);
             if (result == null)
-                throw new Exception(string.Format(Message.ERROR_NO_RECORD_FOUND_BY_ID, id));
+                throw new CustomException(string.Format(Message.ERROR_NO_RECORD_FOUND_BY_ID, id));
 
             return result;
         }
