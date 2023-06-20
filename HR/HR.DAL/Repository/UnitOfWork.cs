@@ -1,4 +1,5 @@
-﻿using HR.DAL.Contractors;
+﻿using HR.Common.Constants;
+using HR.DAL.Contractors;
 using HR.DAL.DataAccess;
 using HR.DAL.DataAccess.Entities;
 
@@ -23,7 +24,9 @@ namespace HR.DAL.Repository
 
         public async Task SaveChangesAsync()
         {
-            await _db.SaveChangesAsync();
+            var result = await _db.SaveChangesAsync();
+            if (result <= 0)
+                throw new Exception(ErrorMessage.ERROR_SAVING);
         }
     }
 }

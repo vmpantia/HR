@@ -4,11 +4,11 @@ namespace HR.DAL.Contractors
 {
     public interface IBaseRepository<T> where T : class
     {
-        Task AddAsync(T entity);
-        void Delete(T entity);
+        void Add(T entity);
+        void Update(Guid id, T entity);
+        void Delete(Guid id);
         IEnumerable<T> GetAll();
+        T GetByID(Guid id);
         IEnumerable<T> GetByExpression(Expression<Func<T, bool>> expression);
-        Task<T> GetByIDAsync(Guid id);
-        void Update(T entity);
     }
 }

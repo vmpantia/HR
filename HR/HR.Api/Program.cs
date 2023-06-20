@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//Database Configurations
 builder.Services.AddDbContext<HRDbContext>(opt => 
     opt.UseSqlServer(builder.Configuration.GetConnectionString("QA")));
 

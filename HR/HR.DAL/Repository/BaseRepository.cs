@@ -17,20 +17,26 @@ namespace HR.DAL.Repository
             _table = context.Set<T>();
         }
 
-        public async Task AddAsync(T entity)
+        public void Add(T entity)
         {
-            await _table.AddAsync(entity);
+            _table.Add(entity);
         }
 
-        public void Update(T entity)
+        public void Update(Guid id, T entity)
         {
-            _table.Attach(entity);
-            _db.Entry(entity).State = EntityState.Modified;
+            var res = GetByID(id);
+            if (res != null)
+            {
+                _table.Attach(entity);
+                _db.Entry(entity).State = EntityState.Modified;
+            }
         }
 
-        public void Delete(T entity)
+        public void Delete(Guid id)
         {
-            _table.Remove(entity);
+            var res = GetByID(id);
+            if (res != null)
+                _table.Remove(res);
         }
 
         public IEnumerable<T> GetAll()
@@ -38,11 +44,11 @@ namespace HR.DAL.Repository
             return _table.AsNoTracking();
         }
 
-        public async Task<T> GetByIDAsync(Guid id)
+        public T GetByID(Guid id)
         {
-            var result = await _table.FindAsync(id);
+            var result = _table.Find(id);
             if (result == null)
-                throw new Exception(string.Format(ErrorMessage.NO_RECORD_FOUND_BY_ID, id));
+                throw new Exception(string.Format(ErrorMessage.ERROR_NO_RECORD_FOUND_BY_ID, id));
 
             return result;
         }

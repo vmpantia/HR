@@ -1,4 +1,5 @@
 using HR.BAL.Contractors;
+using HR.BAL.Models.Request;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HR.Api.Controllers
@@ -14,19 +15,29 @@ namespace HR.Api.Controllers
         [HttpGet("GetEmployees")]
         public IActionResult GetEmployees()
         {
-            try
-            {
-                var response = _employee.GetEmployees();
-                if(response == null) 
-                    return NotFound();
-
-                return Ok(response);
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var response = _employee.GetEmployees();
+            return Ok(response);
         }
 
+        [HttpGet("GetEmployeeByID")]
+        public IActionResult GetEmployeeByID(Guid internalID)
+        {
+            var response = _employee.GetEmployeeByID(internalID);
+            return Ok(response);
+        }
+
+        [HttpPost("SaveEmployee")]
+        public async Task<IActionResult> SaveEmployeeAsync(SaveEmployeeRequest request)
+        {
+            await _employee.SaveEmployeeAsync(request);
+            return Ok("Employee has been saved successfully.");
+        }
+
+        [HttpPost("DeleteEmployee")]
+        public async Task<IActionResult> DeleteEmployeeAsync(DeleteEmployeeRequest request)
+        {
+            await _employee.DeleteEmployeeAsync(request);
+            return Ok("Employee has been deleted successfully.");
+        }
     }
 }
