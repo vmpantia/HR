@@ -26,7 +26,7 @@ namespace HR.DAL.Repository
         {
             var result = await _db.SaveChangesAsync();
             if (result <= 0)
-                throw new Exception(ErrorMessage.ERROR_SAVING);
+                throw new Exception(Message.ERROR_SAVING);
         }
     }
 }

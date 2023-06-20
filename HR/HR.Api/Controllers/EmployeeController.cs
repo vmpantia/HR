@@ -1,5 +1,6 @@
 using HR.BAL.Contractors;
 using HR.BAL.Models.Request;
+using HR.Common.Constants;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HR.Api.Controllers
@@ -30,14 +31,14 @@ namespace HR.Api.Controllers
         public async Task<IActionResult> SaveEmployeeAsync(SaveEmployeeRequest request)
         {
             await _employee.SaveEmployeeAsync(request);
-            return Ok("Employee has been saved successfully.");
+            return Ok(Message.SUCCESS_SAVING_EMPLOYEE);
         }
 
         [HttpPost("DeleteEmployee")]
         public async Task<IActionResult> DeleteEmployeeAsync(DeleteEmployeeRequest request)
         {
             await _employee.DeleteEmployeeAsync(request);
-            return Ok("Employee has been deleted successfully.");
+            return Ok(Message.SUCCESS_DELETING_EMPLOYEE);
         }
     }
 }

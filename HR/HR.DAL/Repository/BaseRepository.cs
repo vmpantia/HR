@@ -48,7 +48,7 @@ namespace HR.DAL.Repository
         {
             var result = _table.Find(id);
             if (result == null)
-                throw new Exception(string.Format(ErrorMessage.ERROR_NO_RECORD_FOUND_BY_ID, id));
+                throw new Exception(string.Format(Message.ERROR_NO_RECORD_FOUND_BY_ID, id));
 
             return result;
         }
