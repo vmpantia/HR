@@ -23,7 +23,7 @@ namespace HR.DAL.DataAccess.Entities
         [StringLength(40)]
         public string LastName { get; set; }
 
-        [StringLength(10), DataType(DataType.Date)] 
+        [StringLength(10)] 
         public string BirthDate { get; set; }
 
         [StringLength(6)]

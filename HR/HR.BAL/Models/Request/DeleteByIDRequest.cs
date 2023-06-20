@@ -1,6 +1,6 @@
 ﻿namespace HR.BAL.Models.Request
 {
-    public class DeleteEmployeeRequest
+    public class DeleteByIDRequest
     {
         public Guid InternalIDToDelete { get; set; }
     }

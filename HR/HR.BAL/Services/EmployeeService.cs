@@ -59,7 +59,7 @@ namespace HR.BAL.Services
             await _uow.SaveChangesAsync();
         }
 
-        public async Task DeleteEmployeeAsync(DeleteEmployeeRequest request)
+        public async Task DeleteEmployeeAsync(DeleteByIDRequest request)
         {
             if (request == null)
                 throw new CustomException(Message.ERROR_REQUEST_NULL);

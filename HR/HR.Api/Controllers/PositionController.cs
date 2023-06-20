@@ -9,18 +9,18 @@ namespace HR.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class EmployeeController : ControllerBase
+    public class PositionController : ControllerBase
     {
-        private readonly IEmployeeService _employee;
+        private readonly IPositionService _position;
 
-        public EmployeeController(IEmployeeService employee) => _employee = employee;
+        public PositionController(IPositionService position) => _position = position;
 
-        [HttpGet("GetEmployees")]
-        public IActionResult GetEmployees()
+        [HttpGet("GetPositions")]
+        public IActionResult GetPositions()
         {
             try
             {
-                var response = _employee.GetEmployees();
+                var response = _position.GetPositions();
                 return Ok(response);
             }
             catch (CustomException ex)
@@ -29,12 +29,12 @@ namespace HR.Api.Controllers
             }
         }
 
-        [HttpGet("GetEmployeeByID")]
-        public IActionResult GetEmployeeByID(Guid internalID)
+        [HttpGet("GetPositionByID")]
+        public IActionResult GetPositionByID(Guid internalID)
         {
             try
             {
-                var response = _employee.GetEmployeeByID(internalID);
+                var response = _position.GetPositionByID(internalID);
                 return Ok(response);
             }
             catch (CustomException ex)
@@ -43,12 +43,12 @@ namespace HR.Api.Controllers
             }
         }
 
-        [HttpPost("PostSaveEmployee")]
-        public async Task<IActionResult> PostSaveEmployeeAsync(SaveEmployeeRequest request)
+        [HttpPost("PostSavePosition")]
+        public async Task<IActionResult> PostSavePositionAsync(SavePositionRequest request)
         {
             try
             {
-                await _employee.SaveEmployeeAsync(request);
+                await _position.SavePositionAsync(request);
                 return Ok(Message.SUCCESS_SAVING_EMPLOYEE);
             }
             catch(CustomException ex)
@@ -57,12 +57,12 @@ namespace HR.Api.Controllers
             }
         }
 
-        [HttpPost("PostDeleteEmployee")]
-        public async Task<IActionResult> PostDeleteEmployeeAsync(DeleteByIDRequest request)
+        [HttpPost("PostDeletePosition")]
+        public async Task<IActionResult> PostDeletePositionAsync(DeleteByIDRequest request)
         {
             try
             {
-                await _employee.DeleteEmployeeAsync(request);
+                await _position.DeletePositionAsync(request);
                 return Ok(Message.SUCCESS_DELETING_EMPLOYEE);
             }
             catch(CustomException ex)

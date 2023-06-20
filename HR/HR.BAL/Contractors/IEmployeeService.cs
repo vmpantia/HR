@@ -8,6 +8,6 @@ namespace HR.BAL.Contractors
         IEnumerable<EmployeeDTO> GetEmployees();
         EmployeeDTO GetEmployeeByID(Guid internalID);
         Task SaveEmployeeAsync(SaveEmployeeRequest request);
-        Task DeleteEmployeeAsync(DeleteEmployeeRequest request);
+        Task DeleteEmployeeAsync(DeleteByIDRequest request);
     }
 }

@@ -9,7 +9,10 @@ namespace HR.BAL.Mapper
     {
         public AutoMapperProfile()
         {
-            CreateMap<Employee, EmployeeDTO>().ReverseMap();
+            CreateMap<Employee, EmployeeDTO>()
+                .ForMember(dst => dst.StatusDescription,
+                           opt => opt.MapFrom(org => Parser.ParseStatus(org.Status)))
+                .ReverseMap();
             CreateMap<Department, DepartmentDTO>().ReverseMap();
             CreateMap<Position, PositionDTO>().ReverseMap();
         }
