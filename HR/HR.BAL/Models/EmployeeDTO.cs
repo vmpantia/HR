@@ -8,6 +8,10 @@ namespace HR.BAL.Models
         [Key]
         public Guid InternalID { get; set; }
 
+        //Relational IDs
+        public Guid Department_InternalID { get; set; }
+        public Guid Position_InternalID { get; set; }
+
         [Required, StringLength(15)]
         public string ID { get; set; }
 

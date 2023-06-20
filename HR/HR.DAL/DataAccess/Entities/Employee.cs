@@ -7,6 +7,10 @@ namespace HR.DAL.DataAccess.Entities
         [Key]
         public Guid InternalID { get; set; }
 
+        //Relational IDs
+        public Guid Department_InternalID { get; set; }
+        public Guid Position_InternalID { get; set; }
+
         [StringLength(15)]
         public string ID { get; set; }
 
