@@ -8,30 +8,30 @@ namespace HR.BAL.Models
         [Key]
         public Guid InternalID { get; set; }
 
-        [DisplayName("Employee ID"), StringLength(15)]
-        public string EmployeeID { get; set; }
+        [Required, StringLength(15)]
+        public string ID { get; set; }
 
-        [DisplayName("First Name"), StringLength(40)]
+        [DisplayName("First Name"), Required, StringLength(40)]
         public string FirstName { get; set; }
 
         [DisplayName("Middle Name"), StringLength(40)]
         public string? MiddleName { get; set; }
 
-        [DisplayName("Last Name"), StringLength(40)]
+        [DisplayName("Last Name"), Required, StringLength(40)]
         public string LastName { get; set; }
 
-        [DisplayName("Birth Date"), DataType(DataType.Date)]
-        public DateTime BirthDate { get; set; }
+        [DisplayName("Birth Date"), Required, StringLength(10)]
+        public string BirthDate { get; set; }
 
-        [StringLength(6)]
+        [Required, StringLength(6)]
         public string Gender { get; set; }
 
-        [DisplayName("Civil Status"), StringLength(15)]
+        [DisplayName("Civil Status"), Required, StringLength(15)]
         public string CivilStatus { get; set; }
 
-        [Range(-1, 2)]
-        public int Status { get; set; } /* [-1] - Invalid [0] - Enabled [1] - Disabled [2] - For Deletion  */
-        public string? StatusDescription { get; set; } /* [-1] - Invalid [0] - Enabled [1] - Disabled [2] - For Deletion  */
+        [Range(0, 2)]
+        public int Status { get; set; } /* [0] - Enabled [1] - Disabled [2] - For Deletion  */
+        public string? StatusDescription { get; set; } 
 
         public Guid CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }

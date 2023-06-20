@@ -43,8 +43,8 @@ namespace HR.Api.Controllers
             }
         }
 
-        [HttpPost("SaveEmployee")]
-        public async Task<IActionResult> SaveEmployeeAsync(SaveEmployeeRequest request)
+        [HttpPost("PostSaveEmployee")]
+        public async Task<IActionResult> PostSaveEmployeeAsync(SaveEmployeeRequest request)
         {
             try
             {
@@ -57,8 +57,8 @@ namespace HR.Api.Controllers
             }
         }
 
-        [HttpPost("DeleteEmployee")]
-        public async Task<IActionResult> DeleteEmployeeAsync(DeleteEmployeeRequest request)
+        [HttpPost("PostDeleteEmployee")]
+        public async Task<IActionResult> PostDeleteEmployeeAsync(DeleteEmployeeRequest request)
         {
             try
             {
