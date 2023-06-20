@@ -1,4 +1,3 @@
-using Azure.Core;
 using HR.BAL.Contractors;
 using HR.BAL.Models.Request;
 using HR.Common.Constants;
@@ -12,7 +11,6 @@ namespace HR.Api.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService _employee;
-
         public EmployeeController(IEmployeeService employee) => _employee = employee;
 
         [HttpGet("GetEmployees")]

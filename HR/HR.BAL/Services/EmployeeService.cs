@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using HR.BAL.Contractors;
 using HR.BAL.Models;
 using HR.BAL.Models.Request;
@@ -79,6 +80,10 @@ namespace HR.BAL.Services
             //Get Position
             var pos = _uow.PositionRepository.GetByExpression(pos => pos.InternalID == data.Position_InternalID).FirstOrDefault();
             data.PositionName = pos != null && pos.Status == Status.STATUS_ENABLED_INT ? pos.Name : "-"; /* Set PositionName */
+
+            //Get Contacts
+            var contacts = _uow.ContactRepository.GetByExpression(con => con.Relation_InternalID == data.InternalID);
+            data.Contacts = _mapper.Map<IEnumerable<ContactDTO>>(contacts);
 
             return data;
         }

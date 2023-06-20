@@ -12,6 +12,7 @@ namespace HR.DAL.Repository
         private IBaseRepository<Employee> _empRep;
         private IBaseRepository<Department> _depRep;
         private IBaseRepository<Position> _posRep;
+        private IBaseRepository<Contact> _conRep;
         public UnitOfWork(HRDbContext context) => _db = context;
 
         public IBaseRepository<Employee> EmployeeRepository
@@ -44,6 +45,17 @@ namespace HR.DAL.Repository
                     _posRep = new BaseRepository<Position>(_db);
 
                 return _posRep;
+            }
+        }
+
+        public IBaseRepository<Contact> ContactRepository
+        {
+            get
+            {
+                if (_conRep == null)
+                    _conRep = new BaseRepository<Contact>(_db);
+
+                return _conRep;
             }
         }
 

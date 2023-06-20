@@ -1,4 +1,3 @@
-using Azure.Core;
 using HR.BAL.Contractors;
 using HR.BAL.Models.Request;
 using HR.Common.Constants;
@@ -12,7 +11,6 @@ namespace HR.Api.Controllers
     public class DepartmentController : ControllerBase
     {
         private readonly IDepartmentService _department;
-
         public DepartmentController(IDepartmentService department) => _department = department;
 
         [HttpGet("GetDepartments")]

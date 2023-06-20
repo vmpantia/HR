@@ -20,5 +20,20 @@ namespace HR.Common.Utilities
                     return string.Empty;
             }
         }
+
+        public static string ParseContactType(int type)
+        {
+            switch (type)
+            {
+                case ContactType.TYPE_MOBILE_INT:
+                    return ContactType.TYPE_MOBILE_STR;
+                case ContactType.TYPE_EMAIL_INT:
+                    return ContactType.TYPE_EMAIL_STR;
+                case ContactType.TYPE_TELEPHONE_INT:
+                    return ContactType.TYPE_TELEPHONE_STR;
+                default:
+                    return string.Empty;
+            }
+        }
     }
 }

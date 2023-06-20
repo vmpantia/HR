@@ -13,8 +13,18 @@ namespace HR.BAL.Mapper
                 .ForMember(dst => dst.StatusDescription,
                            opt => opt.MapFrom(org => Parser.ParseStatus(org.Status)))
                 .ReverseMap();
-            CreateMap<Department, DepartmentDTO>().ReverseMap();
-            CreateMap<Position, PositionDTO>().ReverseMap();
+            CreateMap<Department, DepartmentDTO>()
+                .ForMember(dst => dst.StatusDescription,
+                           opt => opt.MapFrom(org => Parser.ParseStatus(org.Status)))
+                .ReverseMap();
+            CreateMap<Position, PositionDTO>()
+                .ForMember(dst => dst.StatusDescription,
+                           opt => opt.MapFrom(org => Parser.ParseStatus(org.Status)))
+                .ReverseMap();
+            CreateMap<Contact, ContactDTO>()
+                .ForMember(dst => dst.TypeDescription,
+                           opt => opt.MapFrom(org => Parser.ParseContactType(org.Type)))
+                .ReverseMap();
         }
     }
 }

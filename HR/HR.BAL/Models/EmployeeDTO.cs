@@ -43,5 +43,7 @@ namespace HR.BAL.Models
         public DateTime CreatedDate { get; set; }
         public Guid? ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
+
+        public IEnumerable<ContactDTO>? Contacts { get; set; }
     }
 }
