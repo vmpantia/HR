@@ -85,6 +85,10 @@ namespace HR.BAL.Services
             var contacts = _uow.ContactRepository.GetByExpression(con => con.Relation_InternalID == data.InternalID);
             data.Contacts = _mapper.Map<IEnumerable<ContactDTO>>(contacts);
 
+            //Get Addresses
+            var addresses = _uow.AddressRepository.GetByExpression(con => con.Relation_InternalID == data.InternalID);
+            data.Addresses = _mapper.Map<IEnumerable<AddressDTO>>(addresses);
+
             return data;
         }
     }

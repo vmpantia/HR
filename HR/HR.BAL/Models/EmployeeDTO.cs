@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using HR.Common.Utilities;
 
 namespace HR.BAL.Models
 {
@@ -37,7 +38,7 @@ namespace HR.BAL.Models
 
         [Range(0, 2)]
         public int Status { get; set; } /* [0] - Enabled [1] - Disabled [2] - For Deletion  */
-        public string? StatusDescription { get; set; } 
+        public string StatusDescription { get { return Parser.ParseStatus(Status); } }
 
         public Guid CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -45,5 +46,6 @@ namespace HR.BAL.Models
         public DateTime? ModifiedDate { get; set; }
 
         public IEnumerable<ContactDTO>? Contacts { get; set; }
+        public IEnumerable<AddressDTO>? Addresses { get; set; }
     }
 }

@@ -13,5 +13,6 @@ namespace HR.DAL.DataAccess
         public DbSet<Department> Departments { get; set; }
         public DbSet<Position> Positions { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Address> Addresses { get; set; }
     }
 }

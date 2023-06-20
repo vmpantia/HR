@@ -35,5 +35,20 @@ namespace HR.Common.Utilities
                     return string.Empty;
             }
         }
+
+        public static string ParseAddressType(int type)
+        {
+            switch (type)
+            {
+                case AddressType.TYPE_PERMANENT_INT:
+                    return AddressType.TYPE_PERMANENT_STR;
+                case AddressType.TYPE_PRESENT_INT:
+                    return AddressType.TYPE_PRESENT_STR;
+                case AddressType.TYPE_PROVINCIAL_INT:
+                    return AddressType.TYPE_PROVINCIAL_STR;
+                default:
+                    return string.Empty;
+            }
+        }
     }
 }

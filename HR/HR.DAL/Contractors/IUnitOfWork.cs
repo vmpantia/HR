@@ -8,6 +8,7 @@ namespace HR.DAL.Contractors
         IBaseRepository<Department> DepartmentRepository { get; }
         IBaseRepository<Position> PositionRepository { get; }
         IBaseRepository<Contact> ContactRepository { get; }
+        IBaseRepository<Address> AddressRepository { get; }
         Task SaveChangesAsync();
     }
 }
