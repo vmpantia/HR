@@ -22,13 +22,13 @@ namespace HR.BAL.Services
         public IEnumerable<EmployeeDTO> GetEmployees()
         {
             var employees = _uow.EmployeeRepository.GetAll();
-            return _mapper.Map<IEnumerable<EmployeeDTO>>(employees);
+            return _mapper.Map<IEnumerable<EmployeeDTO>>(employees).Select(data => PopulateOtherInfo(data));
         }
 
         public EmployeeDTO GetEmployeeByID(Guid internalID)
         {
             var employee = _uow.EmployeeRepository.GetByID(internalID);
-            return _mapper.Map<EmployeeDTO>(employee);
+            return PopulateOtherInfo(_mapper.Map<EmployeeDTO>(employee));
         }
 
         public async Task SaveEmployeeAsync(SaveEmployeeRequest request)
@@ -68,6 +68,19 @@ namespace HR.BAL.Services
             _uow.EmployeeRepository.Delete(request.InternalIDToDelete);
 
             await _uow.SaveChangesAsync();
+        }
+
+        private EmployeeDTO PopulateOtherInfo(EmployeeDTO data)
+        {
+            //Get Department
+            var dep = _uow.DepartmentRepository.GetByExpression(dep => dep.InternalID == data.Department_InternalID).FirstOrDefault();
+            data.DepartmentName = dep != null && dep.Status == Status.STATUS_ENABLED_INT ? dep.Name : "-"; /* Set DepartmentName */
+
+            //Get Position
+            var pos = _uow.PositionRepository.GetByExpression(pos => pos.InternalID == data.Position_InternalID).FirstOrDefault();
+            data.PositionName = pos != null && pos.Status == Status.STATUS_ENABLED_INT ? pos.Name : "-"; /* Set PositionName */
+
+            return data;
         }
     }
 }

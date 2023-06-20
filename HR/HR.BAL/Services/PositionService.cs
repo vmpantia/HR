@@ -22,13 +22,13 @@ namespace HR.BAL.Services
         public IEnumerable<PositionDTO> GetPositions()
         {
             var positions = _uow.PositionRepository.GetAll();
-            return _mapper.Map<IEnumerable<PositionDTO>>(positions);
+            return _mapper.Map<IEnumerable<PositionDTO>>(positions).Select(data => PopulateOtherInfo(data));
         }
 
         public PositionDTO GetPositionByID(Guid internalID)
         {
             var position = _uow.PositionRepository.GetByID(internalID);
-            return _mapper.Map<PositionDTO>(position);
+            return PopulateOtherInfo(_mapper.Map<PositionDTO>(position));
         }
 
         public async Task SavePositionAsync(SavePositionRequest request)
@@ -68,6 +68,15 @@ namespace HR.BAL.Services
             _uow.PositionRepository.Delete(request.InternalIDToDelete);
 
             await _uow.SaveChangesAsync();
+        }
+
+        private PositionDTO PopulateOtherInfo(PositionDTO data)
+        {
+            //Get Department
+            var dep = _uow.DepartmentRepository.GetByExpression(dep => dep.InternalID == data.Department_InternalID).FirstOrDefault();
+            data.DepartmentName = dep != null && dep.Status == Status.STATUS_ENABLED_INT ? dep.Name : "-"; /* Set DepartmentName */
+
+            return data;
         }
     }
 }

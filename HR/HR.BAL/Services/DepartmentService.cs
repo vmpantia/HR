@@ -37,7 +37,7 @@ namespace HR.BAL.Services
                 throw new CustomException(Message.ERROR_REQUEST_NULL);
 
             var isAdd = request.inputDepartment.InternalID == Guid.Empty;
-
+            
             //Map DepartmentDTO to Department
             var department = _mapper.Map<Department>(request.inputDepartment);
 
