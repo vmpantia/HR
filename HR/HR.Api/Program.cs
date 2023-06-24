@@ -4,6 +4,7 @@ using HR.BAL.Models;
 using HR.BAL.Services;
 using HR.DAL.Contractors;
 using HR.DAL.DataAccess;
+using HR.DAL.DataAccess.Entities;
 using HR.DAL.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,9 +16,9 @@ builder.Services.AddDbContext<HRDbContext>(opt =>
 
 //Services
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<BaseService<DepartmentDTO>, DepartmentService>();
-builder.Services.AddScoped<BaseService<EmployeeDTO>, EmployeeService>();
-builder.Services.AddScoped<BaseService<PositionDTO>, PositionService>();
+builder.Services.AddScoped<BaseService<Department>, DepartmentService>();
+builder.Services.AddScoped<BaseService<Employee>, EmployeeService>();
+builder.Services.AddScoped<BaseService<Position>, PositionService>();
 
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));

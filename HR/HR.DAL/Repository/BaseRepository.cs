@@ -23,14 +23,10 @@ namespace HR.DAL.Repository
             _table.Add(entity);
         }
 
-        public void Update(Guid id, T entity)
+        public void Update(T entity)
         {
-            var res = GetByID(id);
-            if (res != null)
-            {
-                _table.Attach(entity);
-                _db.Entry(entity).State = EntityState.Modified;
-            }
+            _table.Attach(entity);
+            _db.Entry(entity).State = EntityState.Modified;
         }
 
         public void Delete(Guid id)

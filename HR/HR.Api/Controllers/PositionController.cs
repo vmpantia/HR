@@ -2,6 +2,7 @@ using HR.BAL.Contractors;
 using HR.BAL.Models;
 using HR.BAL.Models.Request;
 using HR.Common.Constants;
+using HR.DAL.DataAccess.Entities;
 using HR.DAL.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,15 +12,15 @@ namespace HR.Api.Controllers
     [Route("[controller]")]
     public class PositionController : ControllerBase
     {
-        private readonly BaseService<PositionDTO> _position;
-        public PositionController(BaseService<PositionDTO> position) => _position = position;
+        private readonly BaseService<Position> _position;
+        public PositionController(BaseService<Position> position) => _position = position;
 
         [HttpGet("GetPositions")]
         public IActionResult GetPositions()
         {
             try
             {
-                var response = _position.GetAll();
+                var response = _position.GetAll<PositionDTO>();
                 return Ok(response);
             }
             catch (CustomException ex)
@@ -33,7 +34,7 @@ namespace HR.Api.Controllers
         {
             try
             {
-                var response = _position.GetByID(internalID);
+                var response = _position.GetByID<PositionDTO>(internalID);
                 return Ok(response);
             }
             catch (CustomException ex)
