@@ -9,37 +9,31 @@ using HR.DAL.Exceptions;
 
 namespace HR.BAL.Services
 {
-    public class PositionService : IPositionService
+    public class PositionService : BaseService<PositionDTO>
     {
-        private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
-        public PositionService(IUnitOfWork uow, IMapper mapper)
-        {
-            _uow = uow;
-            _mapper = mapper;
-        }
+        public PositionService(IUnitOfWork uow, IMapper mapper) : base(uow, mapper) { }
 
-        public IEnumerable<PositionDTO> GetPositions()
+        public override IEnumerable<PositionDTO> GetAll()
         {
             var positions = _uow.PositionRepository.GetAll();
             return _mapper.Map<IEnumerable<PositionDTO>>(positions).Select(data => PopulateOtherInfo(data));
         }
 
-        public PositionDTO GetPositionByID(Guid internalID)
+        public override PositionDTO GetByID(Guid internalID)
         {
             var position = _uow.PositionRepository.GetByID(internalID);
             return PopulateOtherInfo(_mapper.Map<PositionDTO>(position));
         }
 
-        public async Task SavePositionAsync(SavePositionRequest request)
+        public override async Task SaveAsync(SaveRequest<PositionDTO> request)
         {
             if (request == null)
                 throw new CustomException(Message.ERROR_REQUEST_NULL);
 
-            var isAdd = request.inputPosition.InternalID == Guid.Empty;
+            var isAdd = request.inputData.InternalID == Guid.Empty;
 
             //Map PositionDTO to Position
-            var position = _mapper.Map<Position>(request.inputPosition);
+            var position = _mapper.Map<Position>(request.inputData);
 
             if (isAdd) /* Create position information */
             {
@@ -59,7 +53,7 @@ namespace HR.BAL.Services
             await _uow.SaveChangesAsync();
         }
 
-        public async Task DeletePositionAsync(DeleteByIDRequest request)
+        public override async Task DeleteAsync(DeleteByIDRequest request)
         {
             if (request == null)
                 throw new CustomException(Message.ERROR_REQUEST_NULL);
@@ -78,5 +72,6 @@ namespace HR.BAL.Services
 
             return data;
         }
+
     }
 }

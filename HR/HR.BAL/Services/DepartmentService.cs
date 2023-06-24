@@ -9,37 +9,31 @@ using HR.DAL.Exceptions;
 
 namespace HR.BAL.Services
 {
-    public class DepartmentService : IDepartmentService
+    public class DepartmentService : BaseService<DepartmentDTO>
     {
-        private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
-        public DepartmentService(IUnitOfWork uow, IMapper mapper)
-        {
-            _uow = uow;
-            _mapper = mapper;
-        }
+        public DepartmentService(IUnitOfWork uow, IMapper mapper) : base(uow, mapper) { }
 
-        public IEnumerable<DepartmentDTO> GetDepartments()
+        public override IEnumerable<DepartmentDTO> GetAll()
         {
             var departments = _uow.DepartmentRepository.GetAll();
             return _mapper.Map<IEnumerable<DepartmentDTO>>(departments);
         }
 
-        public DepartmentDTO GetDepartmentByID(Guid internalID)
+        public override DepartmentDTO GetByID(Guid internalID)
         {
             var department = _uow.DepartmentRepository.GetByID(internalID);
             return _mapper.Map<DepartmentDTO>(department);
         }
 
-        public async Task SaveDepartmentAsync(SaveDepartmentRequest request)
+        public override async Task SaveAsync(SaveRequest<DepartmentDTO> request)
         {
             if (request == null)
                 throw new CustomException(Message.ERROR_REQUEST_NULL);
 
-            var isAdd = request.inputDepartment.InternalID == Guid.Empty;
-            
+            var isAdd = request.inputData.InternalID == Guid.Empty;
+
             //Map DepartmentDTO to Department
-            var department = _mapper.Map<Department>(request.inputDepartment);
+            var department = _mapper.Map<Department>(request.inputData);
 
             if (isAdd) /* Create department information */
             {
@@ -59,7 +53,7 @@ namespace HR.BAL.Services
             await _uow.SaveChangesAsync();
         }
 
-        public async Task DeleteDepartmentAsync(DeleteByIDRequest request)
+        public override async Task DeleteAsync(DeleteByIDRequest request)
         {
             if (request == null)
                 throw new CustomException(Message.ERROR_REQUEST_NULL);

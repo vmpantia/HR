@@ -1,4 +1,5 @@
 using HR.BAL.Contractors;
+using HR.BAL.Models;
 using HR.BAL.Models.Request;
 using HR.Common.Constants;
 using HR.DAL.Exceptions;
@@ -10,15 +11,15 @@ namespace HR.Api.Controllers
     [Route("[controller]")]
     public class DepartmentController : ControllerBase
     {
-        private readonly IDepartmentService _department;
-        public DepartmentController(IDepartmentService department) => _department = department;
+        private readonly BaseService<DepartmentDTO> _department;
+        public DepartmentController(BaseService<DepartmentDTO> department) => _department = department;
 
         [HttpGet("GetDepartments")]
         public IActionResult GetDepartments()
         {
             try
             {
-                var response = _department.GetDepartments();
+                var response = _department.GetAll();
                 return Ok(response);
             }
             catch (CustomException ex)
@@ -32,7 +33,7 @@ namespace HR.Api.Controllers
         {
             try
             {
-                var response = _department.GetDepartmentByID(internalID);
+                var response = _department.GetByID(internalID);
                 return Ok(response);
             }
             catch (CustomException ex)
@@ -42,11 +43,11 @@ namespace HR.Api.Controllers
         }
 
         [HttpPost("PostSaveDepartment")]
-        public async Task<IActionResult> PostSaveDepartmentAsync(SaveDepartmentRequest request)
+        public async Task<IActionResult> PostSaveDepartmentAsync(SaveRequest<DepartmentDTO> request)
         {
             try
             {
-                await _department.SaveDepartmentAsync(request);
+                await _department.SaveAsync(request);
                 return Ok(Message.SUCCESS_SAVING_EMPLOYEE);
             }
             catch(CustomException ex)
@@ -60,7 +61,7 @@ namespace HR.Api.Controllers
         {
             try
             {
-                await _department.DeleteDepartmentAsync(request);
+                await _department.DeleteAsync(request);
                 return Ok(Message.SUCCESS_DELETING_EMPLOYEE);
             }
             catch(CustomException ex)

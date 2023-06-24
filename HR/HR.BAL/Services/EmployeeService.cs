@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Azure.Core;
 using HR.BAL.Contractors;
 using HR.BAL.Models;
 using HR.BAL.Models.Request;
@@ -10,37 +9,30 @@ using HR.DAL.Exceptions;
 
 namespace HR.BAL.Services
 {
-    public class EmployeeService : IEmployeeService
+    public class EmployeeService : BaseService<EmployeeDTO>
     {
-        private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
-        public EmployeeService(IUnitOfWork uow, IMapper mapper)
-        {
-            _uow = uow;
-            _mapper = mapper;
-        }
-
-        public IEnumerable<EmployeeDTO> GetEmployees()
+        public EmployeeService(IUnitOfWork uow, IMapper mapper) : base(uow, mapper) { }
+        public override IEnumerable<EmployeeDTO> GetAll()
         {
             var employees = _uow.EmployeeRepository.GetAll();
             return _mapper.Map<IEnumerable<EmployeeDTO>>(employees).Select(data => PopulateOtherInfo(data));
         }
 
-        public EmployeeDTO GetEmployeeByID(Guid internalID)
+        public override EmployeeDTO GetByID(Guid internalID)
         {
             var employee = _uow.EmployeeRepository.GetByID(internalID);
             return PopulateOtherInfo(_mapper.Map<EmployeeDTO>(employee));
         }
 
-        public async Task SaveEmployeeAsync(SaveEmployeeRequest request)
+        public override async Task SaveAsync(SaveRequest<EmployeeDTO> request)
         {
             if (request == null)
                 throw new CustomException(Message.ERROR_REQUEST_NULL);
 
-            var isAdd = request.inputEmployee.InternalID == Guid.Empty;
-            
+            var isAdd = request.inputData.InternalID == Guid.Empty;
+
             //Map EmployeeDTO to Employee
-            var employee = _mapper.Map<Employee>(request.inputEmployee);
+            var employee = _mapper.Map<Employee>(request.inputData);
 
             if (isAdd) /* Create employee information */
             {
@@ -60,7 +52,7 @@ namespace HR.BAL.Services
             await _uow.SaveChangesAsync();
         }
 
-        public async Task DeleteEmployeeAsync(DeleteByIDRequest request)
+        public override async Task DeleteAsync(DeleteByIDRequest request)
         {
             if (request == null)
                 throw new CustomException(Message.ERROR_REQUEST_NULL);

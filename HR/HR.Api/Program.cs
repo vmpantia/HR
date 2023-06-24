@@ -1,5 +1,6 @@
 using HR.BAL.Contractors;
 using HR.BAL.Mapper;
+using HR.BAL.Models;
 using HR.BAL.Services;
 using HR.DAL.Contractors;
 using HR.DAL.DataAccess;
@@ -14,9 +15,9 @@ builder.Services.AddDbContext<HRDbContext>(opt =>
 
 //Services
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-builder.Services.AddScoped<IDepartmentService, DepartmentService>();
-builder.Services.AddScoped<IPositionService, PositionService>();
+builder.Services.AddScoped<BaseService<DepartmentDTO>, DepartmentService>();
+builder.Services.AddScoped<BaseService<EmployeeDTO>, EmployeeService>();
+builder.Services.AddScoped<BaseService<PositionDTO>, PositionService>();
 
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));

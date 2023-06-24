@@ -1,4 +1,5 @@
 using HR.BAL.Contractors;
+using HR.BAL.Models;
 using HR.BAL.Models.Request;
 using HR.Common.Constants;
 using HR.DAL.Exceptions;
@@ -10,15 +11,15 @@ namespace HR.Api.Controllers
     [Route("[controller]")]
     public class PositionController : ControllerBase
     {
-        private readonly IPositionService _position;
-        public PositionController(IPositionService position) => _position = position;
+        private readonly BaseService<PositionDTO> _position;
+        public PositionController(BaseService<PositionDTO> position) => _position = position;
 
         [HttpGet("GetPositions")]
         public IActionResult GetPositions()
         {
             try
             {
-                var response = _position.GetPositions();
+                var response = _position.GetAll();
                 return Ok(response);
             }
             catch (CustomException ex)
@@ -32,7 +33,7 @@ namespace HR.Api.Controllers
         {
             try
             {
-                var response = _position.GetPositionByID(internalID);
+                var response = _position.GetByID(internalID);
                 return Ok(response);
             }
             catch (CustomException ex)
@@ -42,11 +43,11 @@ namespace HR.Api.Controllers
         }
 
         [HttpPost("PostSavePosition")]
-        public async Task<IActionResult> PostSavePositionAsync(SavePositionRequest request)
+        public async Task<IActionResult> PostSavePositionAsync(SaveRequest<PositionDTO> request)
         {
             try
             {
-                await _position.SavePositionAsync(request);
+                await _position.SaveAsync(request);
                 return Ok(Message.SUCCESS_SAVING_EMPLOYEE);
             }
             catch(CustomException ex)
@@ -60,7 +61,7 @@ namespace HR.Api.Controllers
         {
             try
             {
-                await _position.DeletePositionAsync(request);
+                await _position.DeleteAsync(request);
                 return Ok(Message.SUCCESS_DELETING_EMPLOYEE);
             }
             catch(CustomException ex)
