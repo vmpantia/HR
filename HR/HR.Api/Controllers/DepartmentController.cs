@@ -24,7 +24,7 @@ namespace HR.Api.Controllers
         {
             try
             {
-                var response = _department.GetAll<DepartmentDTO>();
+                var response = _department.GetAll();
                 return OkResult(response);
             }
             catch (CustomException ex)
@@ -38,7 +38,7 @@ namespace HR.Api.Controllers
         {
             try
             {
-                var response = _department.GetByID<DepartmentDTO>(internalID);
+                var response = _department.GetByID(internalID);
                 return OkResult(response);
             }
             catch (CustomException ex)

@@ -1,20 +1,26 @@
 ﻿using AutoMapper;
 using HR.BAL.Contractors;
 using HR.BAL.Models;
+using HR.BAL.Models.Request;
 using HR.Common.Constants;
 using HR.DAL.Contractors;
 using HR.DAL.DataAccess.Entities;
 
 namespace HR.BAL.Services
 {
-    public class EmployeeService : BaseService<Employee>
+    public class EmployeeService : BaseService<Employee, EmployeeDTO>
     {
         public EmployeeService(IUnitOfWork uow, IMapper mapper) : base(uow, mapper) { }
 
-        public IEnumerable<EmployeeDTO> GetFullInfo()
+        public override IEnumerable<EmployeeDTO> GetAll()
         {
-            var result = base.GetAll<EmployeeDTO>();
-            return result.Select(data => PopulateOtherInfo(data));
+            var result = base.GetAll();
+            return result.Select(data => PopulateOtherInfo(data)); ;
+        }
+
+        public override async Task SaveAsync(SaveRequest<EmployeeDTO> request)
+        {
+            await base.SaveAsync(request);
         }
 
         private EmployeeDTO PopulateOtherInfo(EmployeeDTO data)

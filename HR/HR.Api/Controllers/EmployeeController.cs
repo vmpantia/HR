@@ -23,7 +23,7 @@ namespace HR.Api.Controllers
         {
             try
             {
-                var response = _employee.GetFullInfo();
+                var response = _employee.GetAll();
                 return OkResult(response);
             }
             catch (CustomException ex)
@@ -37,7 +37,7 @@ namespace HR.Api.Controllers
         {
             try
             {
-                var response = _employee.GetByID<EmployeeDTO>(internalID);
+                var response = _employee.GetByID(internalID);
                 return OkResult(response);
             }
             catch (CustomException ex)

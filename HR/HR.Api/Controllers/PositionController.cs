@@ -23,7 +23,7 @@ namespace HR.Api.Controllers
         {
             try
             {
-                var response = _position.GetAll<PositionDTO>();
+                var response = _position.GetAll();
                 return OkResult(response);
             }
             catch (CustomException ex)
@@ -37,7 +37,7 @@ namespace HR.Api.Controllers
         {
             try
             {
-                var response = _position.GetByID<PositionDTO>(internalID);
+                var response = _position.GetByID(internalID);
                 return OkResult(response);
             }
             catch (CustomException ex)

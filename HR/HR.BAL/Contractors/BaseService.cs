@@ -6,7 +6,7 @@ using HR.DAL.Exceptions;
 
 namespace HR.BAL.Contractors
 {
-    public abstract class BaseService<TEntity> where TEntity : class
+    public abstract class BaseService<TEntity, TDto> where TEntity : class
     {
         protected readonly IUnitOfWork _uow;
         protected readonly IMapper _mapper;
@@ -16,19 +16,19 @@ namespace HR.BAL.Contractors
             _mapper = mapper;
         }
 
-        public virtual IEnumerable<TDto> GetAll<TDto>()
+        public virtual IEnumerable<TDto> GetAll()
         {
             var result = _uow.GetRepository<TEntity>().GetAll();
             return _mapper.Map<IEnumerable<TDto>>(result);
         }
 
-        public virtual TDto GetByID<TDto>(Guid internalID)
+        public virtual TDto GetByID(Guid internalID)
         {
             var result = _uow.GetRepository<TEntity>().GetByID(internalID);
             return _mapper.Map<TDto>(result);
         }
 
-        public virtual async Task SaveAsync<TDto>(SaveRequest<TDto> request)
+        public virtual async Task SaveAsync(SaveRequest<TDto> request)
         {
             Guid internalID;
 

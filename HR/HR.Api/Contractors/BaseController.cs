@@ -1,4 +1,5 @@
 ﻿using HR.BAL.Models.Response;
+using HR.Common.Constants;
 using HR.DAL.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +15,7 @@ namespace HR.Api.Contractors
 
         protected IActionResult OkResult(object data)
         {
-            var customMessage = "Your request has been processed successfully!";
+            var customMessage = Message.DEFAULT_SUCCESS;
             _logger.LogInformation(customMessage);
             return Ok(new RequestResponse { Message = customMessage, Data = data });
         }

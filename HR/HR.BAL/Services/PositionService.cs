@@ -7,13 +7,13 @@ using HR.DAL.DataAccess.Entities;
 
 namespace HR.BAL.Services
 {
-    public class PositionService : BaseService<Position>
+    public class PositionService : BaseService<Position, PositionDTO>
     {
         public PositionService(IUnitOfWork uow, IMapper mapper) : base(uow, mapper) { }
 
-        public IEnumerable<PositionDTO> GetFullInfo()
+        public override IEnumerable<PositionDTO> GetAll()
         {
-            var result = base.GetAll<PositionDTO>();
+            var result = base.GetAll();
             return result.Select(data => PopulateOtherInfo(data));
         }
 
