@@ -19,26 +19,16 @@ namespace HR.BAL.Services
             return result.Select(data => PopulateOtherInfo(data)); ;
         }
 
-        public override async Task SaveAsync(SaveRequest<EmployeeDTO> request)
+        public async Task SaveAsync(SaveRequest<EmployeeDTO> request)
         {
-            if (request == null || request.inputData == null)
-                throw new CustomException(Message.ERROR_REQUEST_NULL);
-
-            var employee = _mapper.Map<Employee>(request.inputData);
-
-            var isAdd = employee.InternalID == Guid.Empty;
-            employee.InternalID = isAdd ? Guid.NewGuid() : employee.InternalID;
-
-            if (isAdd) /* Create Information */
-                _uow.GetRepository<Employee>().Add(employee);
-
-            else /* Edit Information */
-                _uow.GetRepository<Employee>().Update(employee);
+            //Save Employee Information 
+            await base.SaveAsync(request, false);
 
             //Save Other Informations
-            SaveContacts(request.inputData.Contacts, employee.InternalID);
-            SaveAddresses(request.inputData.Addresses, employee.InternalID);
+            SaveContacts(request.inputData.Contacts, request.inputData.InternalID);
+            SaveAddresses(request.inputData.Addresses, request.inputData.InternalID);
 
+            //Commit Changes
             await _uow.SaveChangesAsync();
         }
 

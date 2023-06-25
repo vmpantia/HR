@@ -28,21 +28,33 @@ namespace HR.BAL.Contractors
             return _mapper.Map<TDto>(result);
         }
 
-        public virtual async Task SaveAsync(SaveRequest<TDto> request)
+        public virtual async Task SaveAsync(SaveRequest<TDto> request, bool isAutoSave = true)
         {
             Guid internalID;
 
             if (request == null || request.inputData == null)
                 throw new CustomException(Message.ERROR_REQUEST_NULL);
 
-            var entity = _mapper.Map<TEntity>(request.inputData);
+            //Get Type of inputData
+            var type = request.inputData.GetType();
 
-            var type = entity.GetType();
-            var id = type.GetProperty(CommonProperty.INTERNAL_ID)?.GetValue(entity) ?? string.Empty;
+            //Get InternalID
+            var id = type.GetProperty(CommonProperty.INTERNAL_ID)?
+                         .GetValue(request.inputData) ?? string.Empty;
+
+            //Parse InternalID to GUID
             if (!Guid.TryParse(id.ToString(), out internalID))
                 throw new CustomException(Message.ERROR_INTERNAL_ID_PROPERTY_NOT_FOUND);
 
+            //Check transaction is Add or Update
             var isAdd = internalID == Guid.Empty;
+
+            //Set new InternalID if the transaction is Add
+            internalID = isAdd ? Guid.NewGuid() : internalID;
+            type.GetProperty(CommonProperty.INTERNAL_ID)?.SetValue(request.inputData, internalID);
+
+            //Convert or Map DTO to Entity
+            var entity = _mapper.Map<TEntity>(request.inputData);
 
             if (isAdd) /* Create Information */
                 _uow.GetRepository<TEntity>().Add(entity);
@@ -50,10 +62,11 @@ namespace HR.BAL.Contractors
             else /* Edit Information */
                 _uow.GetRepository<TEntity>().Update(entity);
 
-            await _uow.SaveChangesAsync();
+            if(isAutoSave)
+                await _uow.SaveChangesAsync();
         }
 
-        public virtual async Task DeleteAsync(DeleteByIDRequest request)
+        public virtual async Task DeleteAsync(DeleteByIDRequest request, bool isAutoSave = true)
         {
             if (request == null)
                 throw new CustomException(Message.ERROR_REQUEST_NULL);
@@ -61,7 +74,8 @@ namespace HR.BAL.Contractors
             //Delete Information
             _uow.GetRepository<TEntity>().Delete(request.InternalIDToDelete);
 
-            await _uow.SaveChangesAsync();
+            if (isAutoSave)
+                await _uow.SaveChangesAsync();
         }
     }
 }
