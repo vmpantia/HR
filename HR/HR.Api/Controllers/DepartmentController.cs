@@ -48,7 +48,7 @@ namespace HR.Api.Controllers
             try
             {
                 await _department.SaveAsync(request);
-                return Ok(Message.SUCCESS_SAVING_EMPLOYEE);
+                return Ok(string.Format(Message.SUCCESS_SAVING, HRObject.OBJECT_DEPARTMENT));
             }
             catch(CustomException ex)
             {
@@ -62,7 +62,7 @@ namespace HR.Api.Controllers
             try
             {
                 await _department.DeleteAsync(request);
-                return Ok(Message.SUCCESS_DELETING_EMPLOYEE);
+                return Ok(string.Format(Message.SUCCESS_DELETING, HRObject.OBJECT_DEPARTMENT));
             }
             catch(CustomException ex)
             {

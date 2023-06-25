@@ -38,9 +38,9 @@ namespace HR.BAL.Contractors
             var entity = _mapper.Map<TEntity>(request.inputData);
 
             var type = entity.GetType();
-            var id = type.GetProperty("InternalID")?.GetValue(entity) ?? string.Empty;
+            var id = type.GetProperty(CommonProperty.INTERNAL_ID)?.GetValue(entity) ?? string.Empty;
             if (!Guid.TryParse(id.ToString(), out internalID))
-                throw new CustomException("InternalID cannot be found in the entity.");
+                throw new CustomException(Message.ERROR_INTERNAL_ID_PROPERTY_NOT_FOUND);
 
             var isAdd = internalID == Guid.Empty;
 
