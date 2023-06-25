@@ -7,23 +7,23 @@ using System.Linq.Expressions;
 
 namespace HR.DAL.Repository
 {
-    public class BaseRepository<T> : IBaseRepository<T> where T : class
+    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {
         private readonly DbContext _db;
-        private readonly DbSet<T> _table;
+        private readonly DbSet<TEntity> _table;
 
         public BaseRepository(HRDbContext context)
         {
             _db = context;
-            _table = context.Set<T>();
+            _table = context.Set<TEntity>();
         }
 
-        public void Add(T entity)
+        public void Add(TEntity entity)
         {
             _table.Add(entity);
         }
 
-        public void Update(T entity)
+        public void Update(TEntity entity)
         {
             _table.Attach(entity);
             _db.Entry(entity).State = EntityState.Modified;
@@ -36,12 +36,24 @@ namespace HR.DAL.Repository
                 _table.Remove(res);
         }
 
-        public IEnumerable<T> GetAll()
+        public void Delete(TEntity entity)
+        {
+            _table.Remove(entity);
+        }
+
+        public void DeleteByExpression(Expression<Func<TEntity, bool>> expression)
+        {
+            var result = GetByExpression(expression);
+            foreach(var item in result)
+                Delete(item);
+        }
+
+        public IEnumerable<TEntity> GetAll()
         {
             return _table.AsNoTracking();
         }
 
-        public T GetByID(Guid id)
+        public TEntity GetByID(Guid id)
         {
             var result = _table.Find(id);
             if (result == null)
@@ -50,7 +62,7 @@ namespace HR.DAL.Repository
             return result;
         }
 
-        public IEnumerable<T> GetByExpression(Expression<Func<T, bool>> expression)
+        public IEnumerable<TEntity> GetByExpression(Expression<Func<TEntity, bool>> expression)
         {
             return _table.Where(expression);
         }

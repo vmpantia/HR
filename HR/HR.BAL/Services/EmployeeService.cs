@@ -5,6 +5,7 @@ using HR.BAL.Models.Request;
 using HR.Common.Constants;
 using HR.DAL.Contractors;
 using HR.DAL.DataAccess.Entities;
+using HR.DAL.Exceptions;
 
 namespace HR.BAL.Services
 {
@@ -20,7 +21,61 @@ namespace HR.BAL.Services
 
         public override async Task SaveAsync(SaveRequest<EmployeeDTO> request)
         {
-            await base.SaveAsync(request);
+            if (request == null || request.inputData == null)
+                throw new CustomException(Message.ERROR_REQUEST_NULL);
+
+            var employee = _mapper.Map<Employee>(request.inputData);
+
+            var isAdd = employee.InternalID == Guid.Empty;
+            employee.InternalID = isAdd ? Guid.NewGuid() : employee.InternalID;
+
+            if (isAdd) /* Create Information */
+                _uow.GetRepository<Employee>().Add(employee);
+
+            else /* Edit Information */
+                _uow.GetRepository<Employee>().Update(employee);
+
+            //Save Other Informations
+            SaveContacts(request.inputData.Contacts, employee.InternalID);
+            SaveAddresses(request.inputData.Addresses, employee.InternalID);
+
+            await _uow.SaveChangesAsync();
+        }
+
+        private void SaveContacts(IEnumerable<ContactDTO>? contacts, Guid internalID)
+        {
+            if (contacts == null)
+                return;
+
+            //Delete old contacts
+            _uow.GetRepository<Contact>()
+                .DeleteByExpression(data => data.Relation_InternalID == internalID);
+
+            //Add new contacts
+            foreach (var contact in contacts)
+            {
+                var entity = _mapper.Map<Contact>(contact);
+                entity.Relation_InternalID = internalID;
+                _uow.GetRepository<Contact>().Add(entity);
+            }
+        }
+
+        private void SaveAddresses(IEnumerable<AddressDTO>? addresses, Guid internalID)
+        {
+            if (addresses == null)
+                return;
+
+            //Delete old addresses
+            _uow.GetRepository<Address>()
+                .DeleteByExpression(data => data.Relation_InternalID == internalID);
+
+            //Add new addresses
+            foreach (var address in addresses)
+            {
+                var entity = _mapper.Map<Address>(address);
+                entity.Relation_InternalID = internalID;
+                _uow.GetRepository<Address>().Add(entity);
+            }
         }
 
         private EmployeeDTO PopulateOtherInfo(EmployeeDTO data)

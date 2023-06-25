@@ -2,13 +2,15 @@
 
 namespace HR.DAL.Contractors
 {
-    public interface IBaseRepository<T> where T : class
+    public interface IBaseRepository<TEntity> where TEntity : class
     {
-        void Add(T entity);
-        void Update(T entity);
+        void Add(TEntity entity);
+        void Update(TEntity entity);
         void Delete(Guid id);
-        IEnumerable<T> GetAll();
-        T GetByID(Guid id);
-        IEnumerable<T> GetByExpression(Expression<Func<T, bool>> expression);
+        void Delete(TEntity entity);
+        void DeleteByExpression(Expression<Func<TEntity, bool>> expression);
+        IEnumerable<TEntity> GetAll();
+        TEntity GetByID(Guid id);
+        IEnumerable<TEntity> GetByExpression(Expression<Func<TEntity, bool>> expression);
     }
 }
