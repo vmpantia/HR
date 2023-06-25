@@ -1,7 +1,6 @@
 ﻿using HR.Common.Constants;
 using HR.DAL.Contractors;
 using HR.DAL.DataAccess;
-using HR.DAL.DataAccess.Entities;
 using HR.DAL.Exceptions;
 
 namespace HR.DAL.Repository
