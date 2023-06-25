@@ -1,8 +1,7 @@
-using HR.BAL.Contractors;
 using HR.BAL.Models;
 using HR.BAL.Models.Request;
+using HR.BAL.Services;
 using HR.Common.Constants;
-using HR.DAL.DataAccess.Entities;
 using HR.DAL.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,8 +11,8 @@ namespace HR.Api.Controllers
     [Route("[controller]")]
     public class PositionController : ControllerBase
     {
-        private readonly BaseService<Position> _position;
-        public PositionController(BaseService<Position> position) => _position = position;
+        private readonly PositionService _position;
+        public PositionController(PositionService position) => _position = position;
 
         [HttpGet("GetPositions")]
         public IActionResult GetPositions()

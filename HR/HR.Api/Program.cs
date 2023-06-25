@@ -16,9 +16,9 @@ builder.Services.AddDbContext<HRDbContext>(opt =>
 
 //Services
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<BaseService<Department>, DepartmentService>();
-builder.Services.AddScoped<BaseService<Employee>, EmployeeService>();
-builder.Services.AddScoped<BaseService<Position>, PositionService>();
+builder.Services.AddScoped<DepartmentService>();
+builder.Services.AddScoped<EmployeeService>();
+builder.Services.AddScoped<PositionService>();
 
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));

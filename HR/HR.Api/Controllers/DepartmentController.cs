@@ -1,8 +1,7 @@
-using HR.BAL.Contractors;
 using HR.BAL.Models;
 using HR.BAL.Models.Request;
+using HR.BAL.Services;
 using HR.Common.Constants;
-using HR.DAL.DataAccess.Entities;
 using HR.DAL.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,8 +11,8 @@ namespace HR.Api.Controllers
     [Route("[controller]")]
     public class DepartmentController : ControllerBase
     {
-        private readonly BaseService<Department> _department;
-        public DepartmentController(BaseService<Department> department) => _department = department;
+        private readonly DepartmentService _department;
+        public DepartmentController(DepartmentService department) => _department = department;
 
         [HttpGet("GetDepartments")]
         public IActionResult GetDepartments()
@@ -45,7 +44,7 @@ namespace HR.Api.Controllers
 
         [HttpPost("PostSaveDepartment")]
         public async Task<IActionResult> PostSaveDepartmentAsync(SaveRequest<DepartmentDTO> request)
-        {
+        { 
             try
             {
                 await _department.SaveAsync(request);

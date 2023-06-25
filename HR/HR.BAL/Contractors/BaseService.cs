@@ -6,7 +6,7 @@ using HR.DAL.Exceptions;
 
 namespace HR.BAL.Contractors
 {
-    public abstract class BaseService<T1> where T1 : class
+    public abstract class BaseService<TEntity> where TEntity : class
     {
         protected readonly IUnitOfWork _uow;
         protected readonly IMapper _mapper;
@@ -16,39 +16,39 @@ namespace HR.BAL.Contractors
             _mapper = mapper;
         }
 
-        public virtual IEnumerable<T2> GetAll<T2>()
+        public virtual IEnumerable<TDto> GetAll<TDto>()
         {
-            var result = _uow.GetRepository<T1>().GetAll();
-            return _mapper.Map<IEnumerable<T2>>(result);
+            var result = _uow.GetRepository<TEntity>().GetAll();
+            return _mapper.Map<IEnumerable<TDto>>(result);
         }
 
-        public virtual T2 GetByID<T2>(Guid internalID)
+        public virtual TDto GetByID<TDto>(Guid internalID)
         {
-            var result = _uow.GetRepository<T1>().GetByID(internalID);
-            return _mapper.Map<T2>(result);
+            var result = _uow.GetRepository<TEntity>().GetByID(internalID);
+            return _mapper.Map<TDto>(result);
         }
 
-        public virtual async Task SaveAsync<T2>(SaveRequest<T2> request)
+        public virtual async Task SaveAsync<TDto>(SaveRequest<TDto> request)
         {
             Guid internalID;
 
             if (request == null || request.inputData == null)
                 throw new CustomException(Message.ERROR_REQUEST_NULL);
 
-            var entity = _mapper.Map<T1>(request.inputData);
+            var entity = _mapper.Map<TEntity>(request.inputData);
 
             var type = entity.GetType();
             var id = type.GetProperty("InternalID")?.GetValue(entity) ?? string.Empty;
-            if (!Guid.TryParse((string)id, out internalID))
+            if (!Guid.TryParse(id.ToString(), out internalID))
                 throw new CustomException("InternalID cannot be found in the entity.");
 
             var isAdd = internalID == Guid.Empty;
 
             if (isAdd) /* Create Information */
-                _uow.GetRepository<T1>().Add(entity);
+                _uow.GetRepository<TEntity>().Add(entity);
 
             else /* Edit Information */
-                _uow.GetRepository<T1>().Update(entity);
+                _uow.GetRepository<TEntity>().Update(entity);
 
             await _uow.SaveChangesAsync();
         }
@@ -59,7 +59,7 @@ namespace HR.BAL.Contractors
                 throw new CustomException(Message.ERROR_REQUEST_NULL);
 
             //Delete Information
-            _uow.GetRepository<T1>().Delete(request.InternalIDToDelete);
+            _uow.GetRepository<TEntity>().Delete(request.InternalIDToDelete);
 
             await _uow.SaveChangesAsync();
         }
