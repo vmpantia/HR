@@ -1,3 +1,4 @@
+using HR.Api.Contractors;
 using HR.BAL.Models;
 using HR.BAL.Models.Request;
 using HR.BAL.Services;
@@ -9,10 +10,13 @@ namespace HR.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class PositionController : ControllerBase
+    public class PositionController : BaseController
     {
         private readonly PositionService _position;
-        public PositionController(PositionService position) => _position = position;
+        public PositionController(PositionService position, ILogger<PositionController> logger) : base(logger)
+        {
+            _position = position;
+        }
 
         [HttpGet("GetPositions")]
         public IActionResult GetPositions()
@@ -20,11 +24,11 @@ namespace HR.Api.Controllers
             try
             {
                 var response = _position.GetAll<PositionDTO>();
-                return Ok(response);
+                return OkResult(response);
             }
             catch (CustomException ex)
             {
-                return BadRequest(ex.Message);
+                return ErrorResult(ex);
             }
         }
 
@@ -34,11 +38,11 @@ namespace HR.Api.Controllers
             try
             {
                 var response = _position.GetByID<PositionDTO>(internalID);
-                return Ok(response);
+                return OkResult(response);
             }
             catch (CustomException ex)
             {
-                return BadRequest(ex.Message);
+                return ErrorResult(ex);
             }
         }
 
@@ -48,11 +52,11 @@ namespace HR.Api.Controllers
             try
             {
                 await _position.SaveAsync(request);
-                return Ok(string.Format(Message.SUCCESS_SAVING, HRObject.OBJECT_POSITION));
+                return OkResult(string.Format(Message.SUCCESS_SAVING, HRObject.OBJECT_POSITION));
             }
             catch(CustomException ex)
             {
-                return BadRequest(ex.Message);
+                return ErrorResult(ex);
             }
         }
 
@@ -62,11 +66,11 @@ namespace HR.Api.Controllers
             try
             {
                 await _position.DeleteAsync(request);
-                return Ok(string.Format(Message.SUCCESS_DELETING, HRObject.OBJECT_POSITION));
+                return OkResult(string.Format(Message.SUCCESS_DELETING, HRObject.OBJECT_POSITION));
             }
             catch(CustomException ex)
             {
-                return BadRequest(ex.Message);
+                return ErrorResult(ex);
             }
         }
     }

@@ -1,3 +1,4 @@
+using HR.Api.Contractors;
 using HR.BAL.Models;
 using HR.BAL.Models.Request;
 using HR.BAL.Services;
@@ -9,10 +10,14 @@ namespace HR.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class DepartmentController : ControllerBase
+    public class DepartmentController : BaseController
     {
         private readonly DepartmentService _department;
-        public DepartmentController(DepartmentService department) => _department = department;
+
+        public DepartmentController(DepartmentService service, ILogger<DepartmentController> logger) : base(logger)
+        {
+            _department = service;
+        }
 
         [HttpGet("GetDepartments")]
         public IActionResult GetDepartments()
@@ -20,11 +25,11 @@ namespace HR.Api.Controllers
             try
             {
                 var response = _department.GetAll<DepartmentDTO>();
-                return Ok(response);
+                return OkResult(response);
             }
             catch (CustomException ex)
             {
-                return BadRequest(ex.Message);
+                return ErrorResult(ex);
             }
         }
 
@@ -34,11 +39,11 @@ namespace HR.Api.Controllers
             try
             {
                 var response = _department.GetByID<DepartmentDTO>(internalID);
-                return Ok(response);
+                return OkResult(response);
             }
             catch (CustomException ex)
             {
-                return BadRequest(ex.Message);
+                return ErrorResult(ex);
             }
         }
 
@@ -48,11 +53,11 @@ namespace HR.Api.Controllers
             try
             {
                 await _department.SaveAsync(request);
-                return Ok(string.Format(Message.SUCCESS_SAVING, HRObject.OBJECT_DEPARTMENT));
+                return OkResult(string.Format(Message.SUCCESS_SAVING, HRObject.OBJECT_DEPARTMENT));
             }
             catch(CustomException ex)
             {
-                return BadRequest(ex.Message);
+                return ErrorResult(ex);
             }
         }
 
@@ -62,11 +67,11 @@ namespace HR.Api.Controllers
             try
             {
                 await _department.DeleteAsync(request);
-                return Ok(string.Format(Message.SUCCESS_DELETING, HRObject.OBJECT_DEPARTMENT));
+                return OkResult(string.Format(Message.SUCCESS_DELETING, HRObject.OBJECT_DEPARTMENT));
             }
             catch(CustomException ex)
             {
-                return BadRequest(ex.Message);
+                return ErrorResult(ex);
             }
         }
     }
