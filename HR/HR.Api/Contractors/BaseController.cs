@@ -1,4 +1,4 @@
-﻿using HR.BAL.Models;
+﻿using HR.BAL.Models.Response;
 using HR.DAL.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
