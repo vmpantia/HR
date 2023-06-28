@@ -3,6 +3,7 @@ using HR.BAL.Models.Request;
 using HR.Common.Constants;
 using HR.DAL.Contractors;
 using HR.DAL.Exceptions;
+using System.Linq.Expressions;
 
 namespace HR.BAL.Contractors
 {
@@ -14,6 +15,11 @@ namespace HR.BAL.Contractors
         {
             _uow = uow;
             _mapper = mapper;
+        }
+
+        public bool IsDataExist(Expression<Func<TEntity, bool>> condition)
+        {
+            return _uow.GetRepository<TEntity>().GetByExpression(condition).Any();
         }
 
         public virtual IEnumerable<TDto> GetAll()
@@ -39,19 +45,19 @@ namespace HR.BAL.Contractors
             var type = request.inputData.GetType();
 
             //Get InternalID
-            var id = type.GetProperty(CommonProperty.INTERNAL_ID)?
+            var id = type.GetProperty(Property.INTERNAL_ID)?
                          .GetValue(request.inputData) ?? string.Empty;
 
             //Parse InternalID to GUID
             if (!Guid.TryParse(id.ToString(), out internalID))
-                throw new CustomException(Message.ERROR_INTERNAL_ID_PROPERTY_NOT_FOUND);
+                throw new CustomException(string.Format(Message.ERROR_PROPERTY_NOT_FOUND, Property.INTERNAL_ID));
 
             //Check transaction is Add or Update
             var isAdd = internalID == Guid.Empty;
 
             //Set new InternalID if the transaction is Add
             internalID = isAdd ? Guid.NewGuid() : internalID;
-            type.GetProperty(CommonProperty.INTERNAL_ID)?.SetValue(request.inputData, internalID);
+            type.GetProperty(Property.INTERNAL_ID)?.SetValue(request.inputData, internalID);
 
             //Convert or Map DTO to Entity
             var entity = _mapper.Map<TEntity>(request.inputData);
