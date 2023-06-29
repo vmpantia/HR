@@ -21,6 +21,13 @@ namespace HR.BAL.Services
 
         public async Task SaveAsync(SaveRequest<EmployeeDTO> request)
         {
+            //Check if Employee Name is already exist
+            if (IsDataExist(data => data.FirstName == request.inputData.FirstName &&
+                                   data.MiddleName == request.inputData.MiddleName &&
+                                   data.LastName == request.inputData.LastName))
+                throw new CustomException(string.Format(Message.ERROR_NAME_ALREADY_EXIST, HRObject.OBJECT_EMPLOYEE));
+
+
             //Save Employee Information 
             await base.SaveAsync(request, false);
 
