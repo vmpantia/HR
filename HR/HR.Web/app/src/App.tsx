@@ -1,0 +1,32 @@
+import { useForm } from 'react-hook-form';
+import FormTextField from './components/forms/FormTextField';
+import { useState } from 'react';
+
+interface Information {
+  nameee:string;
+}
+
+function App() {
+  const { register, handleSubmit, formState: { errors } } = useForm<Information>();
+  const [ information, setInformation ] = useState({} as Information);
+
+  const onSubmit = (data:Information) => {
+    console.log(data);
+    console.log(errors);
+    console.log(errors);
+    console.log(errors);
+    console.log(errors);
+    console.log(errors);
+    console.log(errors);
+    console.log(errors);
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <FormTextField label="Name" name="name"register={register("name", { required: "Tanga mo" })} error={errors.name} />
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+
+export default App;
