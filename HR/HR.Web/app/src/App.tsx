@@ -1,9 +1,10 @@
 import { useForm } from 'react-hook-form';
 import FormTextField from './components/forms/FormTextField';
 import { useState } from 'react';
+import React from 'react';
 
 interface Information {
-  nameee:string;
+  name:string;
 }
 
 function App() {
@@ -12,12 +13,6 @@ function App() {
 
   const onSubmit = (data:Information) => {
     console.log(data);
-    console.log(errors);
-    console.log(errors);
-    console.log(errors);
-    console.log(errors);
-    console.log(errors);
-    console.log(errors);
     console.log(errors);
   };
 
