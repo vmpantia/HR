@@ -28,5 +28,7 @@ namespace HR.DAL.DataAccess.Entities
 
         [StringLength(100)]
         public string? ModifiedBy { get; set; }
+
+        public virtual IEnumerable<Employee> Empoloyees { get; set; }
     }
 }

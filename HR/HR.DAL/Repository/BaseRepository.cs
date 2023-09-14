@@ -18,8 +18,11 @@ namespace HR.DAL.Repository
             _table = context.Set<TEntity>();
         }
 
-        public IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> expression)
+        public IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> expression = null)
         {
+            if (expression == null)
+                return _table.AsNoTracking();
+
             return _table.Where(expression)
                          .AsNoTracking();
         }
@@ -28,7 +31,7 @@ namespace HR.DAL.Repository
         {
             var result = _table.Where(expression).FirstOrDefault();
 
-            if (result == null)
+            if (result is null)
                 throw new NotFoundException(Message.ERROR_NOT_FOUND_IN_DB);
 
             return result;

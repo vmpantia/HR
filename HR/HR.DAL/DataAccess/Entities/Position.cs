@@ -1,9 +1,10 @@
 ﻿using HR.Common.Models.enums;
+using HR.DAL.Contractors;
 using System.ComponentModel.DataAnnotations;
 
 namespace HR.DAL.DataAccess.Entities
 {
-    public class Position
+    public class Position : IEntity
     {
         [Key]
         public Guid Id { get; set; }
@@ -27,5 +28,7 @@ namespace HR.DAL.DataAccess.Entities
 
         [StringLength(100)]
         public string? ModifiedBy { get; set; }
+
+        public virtual IEnumerable<Employee> Empoloyees { get; set; }
     }
 }

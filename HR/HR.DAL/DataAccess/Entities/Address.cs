@@ -10,6 +10,9 @@ namespace HR.DAL.DataAccess.Entities
         public Guid Id { get; set; }
 
         [Required]
+        public Guid EmployeeId { get; set; }
+
+        [Required]
         public AddressType Type { get; set; }
 
         [Required, StringLength(100)]
@@ -46,5 +49,7 @@ namespace HR.DAL.DataAccess.Entities
 
         [StringLength(100)]
         public string? ModifiedBy { get; set; }
+
+        public virtual Employee Empoloyee { get; set; }
     }
 }

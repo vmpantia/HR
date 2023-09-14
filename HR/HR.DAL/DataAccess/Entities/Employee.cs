@@ -1,12 +1,19 @@
 ﻿using HR.Common.Models.enums;
+using HR.DAL.Contractors;
 using System.ComponentModel.DataAnnotations;
 
 namespace HR.DAL.DataAccess.Entities
 {
-    public class Employee
+    public class Employee : IEntity
     {
         [Key]
         public Guid Id { get; set; }
+
+        [Required]
+        public Guid DepartmentId { get; set; }
+
+        [Required]
+        public Guid PositionId { get; set; }
 
         [Required, StringLength(40)]
         public string FirstName { get; set; }
@@ -39,5 +46,10 @@ namespace HR.DAL.DataAccess.Entities
 
         [StringLength(100)]
         public string? ModifiedBy { get; set; }
+
+        public virtual IEnumerable<Contact> Contacts { get; set; }
+        public virtual IEnumerable<Address> Addresses { get; set; }
+        public virtual Department Department { get; set; }
+        public virtual Position Position { get; set; }
     }
 }

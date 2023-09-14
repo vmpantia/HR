@@ -4,10 +4,10 @@ namespace HR.DAL.Contractors
 {
     public interface IBaseRepository<TEntity>
     {
-        void Add(TEntity entity);
-        void Delete(TEntity entity);
-        IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> expression);
+        IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> expression = null);
         TEntity GetOne(Expression<Func<TEntity, bool>> expression);
+        void Add(TEntity entity);
         void Update(TEntity entity);
+        void Delete(TEntity entity);
     }
 }
