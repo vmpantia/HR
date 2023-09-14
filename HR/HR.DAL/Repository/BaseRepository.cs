@@ -1,7 +1,7 @@
 ﻿using HR.Common.Constants;
+using HR.Common.Exceptions;
 using HR.DAL.Contractors;
 using HR.DAL.DataAccess;
-using HR.DAL.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -18,6 +18,22 @@ namespace HR.DAL.Repository
             _table = context.Set<TEntity>();
         }
 
+        public IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> expression)
+        {
+            return _table.Where(expression)
+                         .AsNoTracking();
+        }
+
+        public TEntity GetOne(Expression<Func<TEntity, bool>> expression)
+        {
+            var result = _table.Where(expression).FirstOrDefault();
+
+            if (result == null)
+                throw new NotFoundException(Message.ERROR_NOT_FOUND_IN_DB);
+
+            return result;
+        }
+
         public void Add(TEntity entity)
         {
             _table.Add(entity);
@@ -25,46 +41,12 @@ namespace HR.DAL.Repository
 
         public void Update(TEntity entity)
         {
-            _table.Attach(entity);
-            _db.Entry(entity).State = EntityState.Modified;
-        }
-
-        public void Delete(Guid id)
-        {
-            var res = GetByID(id);
-            if (res != null)
-                _table.Remove(res);
+            _table.Update(entity);
         }
 
         public void Delete(TEntity entity)
         {
             _table.Remove(entity);
-        }
-
-        public void DeleteByExpression(Expression<Func<TEntity, bool>> expression)
-        {
-            var result = GetByExpression(expression);
-            foreach(var item in result)
-                Delete(item);
-        }
-
-        public IEnumerable<TEntity> GetAll()
-        {
-            return _table.AsNoTracking();
-        }
-
-        public TEntity GetByID(Guid id)
-        {
-            var result = _table.Find(id);
-            if (result == null)
-                throw new CustomException(string.Format(Message.ERROR_NO_RECORD_FOUND_BY_ID, id));
-
-            return result;
-        }
-
-        public IEnumerable<TEntity> GetByExpression(Expression<Func<TEntity, bool>> expression)
-        {
-            return _table.Where(expression);
         }
     }
 }

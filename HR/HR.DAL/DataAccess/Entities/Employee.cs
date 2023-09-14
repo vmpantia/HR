@@ -1,43 +1,43 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HR.Common.Models.enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace HR.DAL.DataAccess.Entities
 {
     public class Employee
     {
         [Key]
-        public Guid InternalID { get; set; }
+        public Guid Id { get; set; }
 
-        //Relational IDs
-        public Guid Department_InternalID { get; set; }
-        public Guid Position_InternalID { get; set; }
-
-        [StringLength(15)]
-        public string ID { get; set; }
-
-        [StringLength(40)]
+        [Required, StringLength(40)]
         public string FirstName { get; set; }
 
         [StringLength(40)]
         public string? MiddleName { get; set; }
 
-        [StringLength(40)]
+        [Required, StringLength(40)]
         public string LastName { get; set; }
 
-        [StringLength(10)] 
-        public string BirthDate { get; set; }
+        [Required]
+        public DateTime BirthDate { get; set; }
 
-        [StringLength(6)]
+        [Required, StringLength(6)]
         public string Gender { get; set; }
 
-        [StringLength(15)]
+        [Required, StringLength(15)]
         public string CivilStatus { get; set; }
 
-        [Range(0, 2)]
-        public int Status { get; set; } /* [0] - Enabled [1] - Disabled [2] - For Deletion  */
+        [Required]
+        public Status Status { get; set; }
 
-        public Guid CreatedBy { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public Guid? ModifiedBy { get; set; }
-        public DateTime? ModifiedDate { get; set; }
+        [Required]
+        public DateTime CreatedAt { get; set; }
+
+        [Required, StringLength(100)]
+        public string CreatedBy { get; set; }
+
+        public DateTime? ModifiedAt { get; set; }
+
+        [StringLength(100)]
+        public string? ModifiedBy { get; set; }
     }
 }

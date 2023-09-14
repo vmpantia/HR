@@ -1,35 +1,50 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using HR.Common.Models.enums;
+using HR.DAL.Contractors;
 using System.ComponentModel.DataAnnotations;
 
 namespace HR.DAL.DataAccess.Entities
 {
-    [PrimaryKey(nameof(Relation_InternalID), nameof(Type))]
-    public class Address
+    public class Address : IEntity
     {
-        public Guid Relation_InternalID { get; set; }
+        [Key]
+        public Guid Id { get; set; }
 
-        [Range(1, 3)]
-        public int Type { get; set; } /* [1] - Permanent Address [2] - Present Address [3] - Provincial Address  */
+        [Required]
+        public AddressType Type { get; set; }
 
-        [StringLength(50)]
+        [Required, StringLength(100)]
         public string AddressLine1 { get; set; }
 
-        [StringLength(50)]
+        [StringLength(100)]
         public string? AddressLine2 { get; set; }
 
-        [StringLength(50)]
+        [Required, StringLength(100)]
         public string Barangay { get; set; }
 
-        [StringLength(50)]
+        [Required, StringLength(100)]
         public string City { get; set; }
 
-        [StringLength(50)]
+        [Required, StringLength(100)]
         public string Province { get; set; }
 
-        [StringLength(50)]
+        [Required, StringLength(100)]
         public string Country { get; set; }
 
-        [StringLength(10)]
+        [Required, StringLength(10)]
         public string ZipCode { get; set; }
+
+        [Required]
+        public Status Status { get; set; }
+
+        [Required]
+        public DateTime CreatedAt { get; set; }
+
+        [Required, StringLength(100)]
+        public string CreatedBy { get; set; }
+
+        public DateTime? ModifiedAt { get; set; }
+
+        [StringLength(100)]
+        public string? ModifiedBy { get; set; }
     }
 }

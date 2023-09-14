@@ -1,19 +1,35 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using HR.Common.Models.enums;
+using HR.DAL.Contractors;
 using System.ComponentModel.DataAnnotations;
 
 namespace HR.DAL.DataAccess.Entities
 {
-    [PrimaryKey(nameof(Relation_InternalID), nameof(Value))]
-    public class Contact
+    public class Contact : IEntity
     {
-        public Guid Relation_InternalID { get; set; }
+        [Key]
+        public Guid Id { get; set; }
 
-        [StringLength(50)]
+        [Required, StringLength(50)]
         public string Value { get; set; }
 
         [Range(1, 3)]
-        public int Type { get; set; } /* [1] - Mobile Number [2] - Email Address [3] - Telephone Number  */
+        public ContactType Type { get; set; }
 
+        [Required]
         public bool IsPrimary { get; set; }
+
+        [Required]
+        public Status Status { get; set; }
+
+        [Required]
+        public DateTime CreatedAt { get; set; }
+
+        [Required, StringLength(100)]
+        public string CreatedBy { get; set; }
+
+        public DateTime? ModifiedAt { get; set; }
+
+        [StringLength(100)]
+        public string? ModifiedBy { get; set; }
     }
 }

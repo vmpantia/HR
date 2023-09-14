@@ -1,10 +1,8 @@
-﻿using HR.DAL.DataAccess.Entities;
-
-namespace HR.DAL.Contractors
+﻿namespace HR.DAL.Contractors
 {
     public interface IUnitOfWork
     {
-        IBaseRepository<T> GetRepository<T>() where T : class;
+        IBaseRepository<TEntity> GetRepository<TEntity>() where TEntity : class;
         Task SaveChangesAsync();
     }
 }

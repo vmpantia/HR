@@ -15,8 +15,4 @@
     <ProjectReference Include="..\HR.DAL\HR.DAL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Validations\" />
-  </ItemGroup>
-
 </Project>
