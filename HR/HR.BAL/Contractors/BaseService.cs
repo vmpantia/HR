@@ -30,16 +30,16 @@ namespace HR.BAL.Contractors
             return _mapper.Map<TDto>(result);
         }
 
-        public virtual async Task Save<TDto>(TDto dto)
+        public virtual async Task SaveAsync<TDto>(TDto dto, Guid? id = null)
         {
             var entity = _mapper.Map<TEntity>(dto);
 
             if (entity is null)
                 throw new Exception($"Error in mapping {nameof(TDto)} to {nameof(TEntity)}.");
 
-            var isAdd = entity.Id == Guid.Empty;
-            if (isAdd)
+            if (id is null)
             {
+                entity.Id = Guid.NewGuid();
                 entity.Status = Status.Enabled;
                 entity.CreatedAt = DateTime.Now;
                 entity.CreatedBy = "System Admin";
@@ -47,7 +47,7 @@ namespace HR.BAL.Contractors
             }
             else
             {
-                var currentEntity = _repo.GetOne(data => data.Id == entity.Id);
+                var currentEntity = _repo.GetOne(data => data.Id == id);
                 var updatedEntity = _mapper.Map(entity, currentEntity);
                 updatedEntity.ModifiedAt = DateTime.Now;
                 updatedEntity.ModifiedBy = "System Admin";
@@ -57,7 +57,7 @@ namespace HR.BAL.Contractors
             await _uow.SaveChangesAsync();
         }
 
-        public virtual async Task Delete(Guid id)
+        public virtual async Task DeleteAsync(Guid id)
         {
             var entity = _repo.GetOne(data => data.Id == id);
             _repo.Delete(entity);

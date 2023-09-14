@@ -50,6 +50,6 @@ namespace HR.DAL.DataAccess.Entities
         [StringLength(100)]
         public string? ModifiedBy { get; set; }
 
-        public virtual Employee Empoloyee { get; set; }
+        public virtual Employee Employee { get; set; }
     }
 }

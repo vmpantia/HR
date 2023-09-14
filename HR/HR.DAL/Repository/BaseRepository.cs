@@ -27,9 +27,14 @@ namespace HR.DAL.Repository
                          .AsNoTracking();
         }
 
-        public TEntity GetOne(Expression<Func<TEntity, bool>> expression)
+        public TEntity GetOne(Expression<Func<TEntity, bool>> expression, params Expression<Func<TEntity, object>>[] includes)
         {
-            var result = _table.Where(expression).FirstOrDefault();
+            IQueryable<TEntity> query = _table;
+
+            foreach (var include in includes)
+                query = query.Include(include);
+
+            var result = query.FirstOrDefault(expression);
 
             if (result is null)
                 throw new NotFoundException(Message.ERROR_NOT_FOUND_IN_DB);

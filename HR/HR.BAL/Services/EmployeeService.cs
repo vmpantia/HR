@@ -14,12 +14,22 @@ namespace HR.BAL.Services
         public override IEnumerable<TDto> GetAll<TDto>(Expression<Func<Employee, bool>> expression = null)
         {
             var result = _repo.GetAll(expression)
-                              .Include(data => data.Contacts)
-                              .Include(data => data.Addresses)
-                              .Include(data => data.Department)
-                              .Include(data => data.Position);
+                                 .Include(tbl => tbl.Contacts)
+                                 .Include(tbl => tbl.Addresses)
+                                 .Include(tbl => tbl.Department)
+                                 .Include(tbl => tbl.Position);
 
             return _mapper.Map<IEnumerable<TDto>>(result);
+        }
+
+        public override TDto GetOne<TDto>(Expression<Func<Employee, bool>> expression = null)
+        {
+            var result = _repo.GetOne(expression, tbl => tbl.Contacts,
+                                                  tbl => tbl.Addresses,
+                                                  tbl => tbl.Department,
+                                                  tbl => tbl.Position);
+
+            return _mapper.Map<TDto>(result);
         }
     }
 }
