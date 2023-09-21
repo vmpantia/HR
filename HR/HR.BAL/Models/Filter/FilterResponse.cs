@@ -2,7 +2,7 @@
 {
     public class FilterResponse<TDto>
     {
-        public TDto Data { get; set; }
+        public IEnumerable<TDto> Data { get; set; }
         public Pagination Pagination { get; set; }
         public LinkBuilder Links { get; set; }
     }

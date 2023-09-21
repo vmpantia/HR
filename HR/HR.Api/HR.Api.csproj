@@ -18,8 +18,4 @@
     <ProjectReference Include="..\HR.BAL\HR.BAL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Contractors\" />
-  </ItemGroup>
-
 </Project>

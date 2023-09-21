@@ -1,4 +1,5 @@
-﻿using HR.Api.Helpers;
+﻿using HR.Api.Contractors;
+using HR.Api.Helpers;
 using HR.BAL.Models;
 using HR.BAL.Models.Filter;
 using HR.BAL.Services;
@@ -8,24 +9,20 @@ namespace HR.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployeeController : ControllerBase
+    public class EmployeeController : BaseController
     {
-        public readonly EmployeeService _employee;
-        public readonly UrlHelper _url;
-        public readonly PaginationHelper _pagination;
-        public EmployeeController(EmployeeService employee, UrlHelper url, PaginationHelper pagination)
-        {
+        private readonly EmployeeService _employee;
+
+        public EmployeeController(UrlHelper url, EmployeeService employee) : base(url) 
+        { 
             _employee = employee;
-            _url = url;
-            _pagination = pagination;
         }
 
         [HttpGet]
         public IActionResult GetAll([FromQuery]FilterRequest filter)
         {
             var data = _employee.GetAll<EmployeeDto>();
-            var paged = _pagination.GetPaged("employee", filter, data);
-            return Ok(paged);
+            return OkPagedResult(data, filter);
         }
 
         [HttpGet("{employeeId}")]
