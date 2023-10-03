@@ -1,6 +1,4 @@
-﻿using HR.Common.Constants;
-using HR.Common.Exceptions;
-using HR.DAL.Contractors;
+﻿using HR.DAL.Contractors;
 using HR.DAL.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -18,43 +16,19 @@ namespace HR.DAL.Repository
             _table = context.Set<TEntity>();
         }
 
-        public IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> expression = null)
-        {
-            if (expression == null)
-                return _table.AsNoTracking();
+        public IQueryable<TEntity> GetAll() =>
+            _table.AsNoTracking();
 
-            return _table.Where(expression)
-                         .AsNoTracking();
-        }
+        public IQueryable<TEntity> GetByExpression(Expression<Func<TEntity, bool>> expression) =>
+            _table.Where(expression).AsNoTracking();
 
-        public TEntity GetOne(Expression<Func<TEntity, bool>> expression, params Expression<Func<TEntity, object>>[] includes)
-        {
-            IQueryable<TEntity> query = _table;
-
-            foreach (var include in includes)
-                query = query.Include(include);
-
-            var result = query.FirstOrDefault(expression);
-
-            if (result is null)
-                throw new NotFoundException(Message.ERROR_NOT_FOUND_IN_DB);
-
-            return result;
-        }
-
-        public void Add(TEntity entity)
-        {
+        public void Add(TEntity entity) => 
             _table.Add(entity);
-        }
 
-        public void Update(TEntity entity)
-        {
+        public void Update(TEntity entity) =>
             _table.Update(entity);
-        }
 
-        public void Delete(TEntity entity)
-        {
+        public void Delete(TEntity entity) =>
             _table.Remove(entity);
-        }
     }
 }

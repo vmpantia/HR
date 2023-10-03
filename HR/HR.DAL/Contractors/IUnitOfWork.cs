@@ -2,7 +2,7 @@
 {
     public interface IUnitOfWork
     {
-        IBaseRepository<TEntity> GetRepository<TEntity>() where TEntity : class;
+        IBaseRepository<TEntity> Repository<TEntity>() where TEntity : class;
         Task SaveChangesAsync();
     }
 }

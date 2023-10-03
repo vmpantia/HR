@@ -1,4 +1,3 @@
-using HR.Api.Helpers;
 using HR.BAL.Mapper;
 using HR.BAL.Services;
 using HR.DAL.Contractors;
@@ -15,7 +14,6 @@ builder.Services.AddDbContext<HRDbContext>(opt =>
 //Services
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<EmployeeService>();
-builder.Services.AddSingleton<UrlHelper>();
 
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));

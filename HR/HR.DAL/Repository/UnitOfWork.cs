@@ -7,11 +7,18 @@ namespace HR.DAL.Repository
     public class UnitOfWork : IUnitOfWork
     {
         private readonly HRDbContext _db;
+        private Dictionary<Type, object> _repositories = new Dictionary<Type, object>();
         public UnitOfWork(HRDbContext context) => _db = context;
 
-        public IBaseRepository<TEntity> GetRepository<TEntity>() where TEntity : class
+        public IBaseRepository<TEntity> Repository<TEntity>() where TEntity : class
         {
-            return new BaseRepository<TEntity>(_db);
+            if (_repositories.Keys.Contains(typeof(TEntity)))
+                return _repositories[typeof(TEntity)] as IBaseRepository<TEntity>;
+
+            var repository = new BaseRepository<TEntity>(_db);
+            _repositories.Add(typeof(TEntity), repository);
+
+            return repository;
         }
 
         public async Task SaveChangesAsync()
