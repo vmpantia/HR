@@ -18,6 +18,9 @@ namespace HR.BAL.Services
                     .Include(tbl => tbl.Contacts)
                     .Include(tbl => tbl.Department)
                     .Include(tbl => tbl.Position)
-            .Select(data => _mapper.Map<EmployeeDto>(data));
+                .Select(data => _mapper.Map<EmployeeDto>(data));
+
+        public EmployeeDto GetEmployee(Guid employeeId) =>
+            base.GetDataById<EmployeeDto, Employee>(employeeId);
     }
 }

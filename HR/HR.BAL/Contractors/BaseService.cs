@@ -61,6 +61,14 @@ namespace HR.BAL.Contractors
             return result;
         }
 
+        protected virtual TDto GetDataById<TDto, TEntity>(Guid id) 
+            where TEntity : class, IEntity
+            where TDto : class
+        {
+            var data = _uow.Repository<TEntity>().GetByExpression(data => data.Id == id);
+            return _mapper.Map<TDto>(data);
+        } 
+
         private Match ValidateRegexPattern(string value, string pattern)
         {
             Match match = Regex.Match(value, pattern);

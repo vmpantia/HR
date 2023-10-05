@@ -26,7 +26,8 @@ namespace HR.Api.Controllers
         [HttpGet("{employeeId}")]
         public IActionResult GetEmployee(Guid employeeId)
         {
-            return Ok();
+            var employee = _employee.GetEmployee(employeeId);
+            return Ok(employee);
         }
     }
 }
