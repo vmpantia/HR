@@ -6,7 +6,7 @@ namespace HR.Common.Extensions
 {
     public static class FilterExtension
     {
-        public static IQueryable<TEntity> DynamicOrderBy<TEntity>(this IQueryable<TEntity> source, string propertyName, OrderCondition condition)
+        public static IQueryable<TEntity> DynamicOrder<TEntity>(this IQueryable<TEntity> source, string propertyName, OrderCondition condition)
         {
             try
             {

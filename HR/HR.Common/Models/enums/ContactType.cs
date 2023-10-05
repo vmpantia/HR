@@ -5,7 +5,7 @@ namespace HR.Common.Models.enums
     public enum ContactType
     {
         [Description("Mobile Number")]
-        MobileNumber = 1,
+        MobileNumber,
         [Description("Email Address")]
         EmailAddress,
         [Description("Telephone Number")]

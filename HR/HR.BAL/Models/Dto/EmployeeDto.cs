@@ -1,6 +1,6 @@
-﻿using HR.DAL.DataAccess.Entities;
+﻿using HR.BAL.Models.Dto.Lites;
 
-namespace HR.BAL.Models
+namespace HR.BAL.Models.Dto
 {
     public class EmployeeDto
     {
@@ -17,13 +17,10 @@ namespace HR.BAL.Models
         public DateTime? ModifiedDate { get; set; }
         public string? ModifiedBy { get; set; }
 
-        public IEnumerable<AddressDto> Addresses { get; set; }
-        public IEnumerable<ContactDto> Contacts { get; set; }
+        public IEnumerable<LiteAddressDto> Addresses { get; set; }
+        public IEnumerable<LiteContactDto> Contacts { get; set; }
 
-        public Guid DepartmentId { get; set; }
-        public string DepartmentName { get; set; }
-
-        public string PositionId { get; set; }
-        public string PositionName { get; set; }
+        public LiteDepartmentDto Department { get; set; }
+        public LitePositionDto Position { get; set; }
     }
 }

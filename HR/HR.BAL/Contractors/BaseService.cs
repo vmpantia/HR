@@ -6,6 +6,8 @@ using HR.DAL.Contractors;
 using System.Text.RegularExpressions;
 using HR.Common.Exceptions;
 using HR.Common.Constants;
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace HR.BAL.Contractors
 {
@@ -19,43 +21,42 @@ namespace HR.BAL.Contractors
             _mapper = mapper;
         }
 
-        protected virtual IEnumerable<TDto> GetFilteredOrderedAndPaginatedList<TDto, TEntity>(FilterRequest request, out int totalItems, out int totalPages) 
+        protected virtual IQueryable<TEntity> GetFilteredOrderedAndPaginatedList<TEntity>(FilterRequest request, 
+                                                                                          out int totalItems, 
+                                                                                          out int totalPages) 
             where TEntity : class
-            where TDto : class
         {
-            // Get all employees stored in the database
-            var employees = _uow.Repository<TEntity>().GetAll();
+            // Get all data stored in the database
+            var list = _uow.Repository<TEntity>().GetAll();
 
             // Check if possible to do dynamic filter
             if (!string.IsNullOrEmpty(request.Filter))
             {
-                // Do filtering of employees
+                // Do filtering of data
                 var matchResult = ValidateRegexPattern(request.Filter, RegexPattern.FILTER_PATTERN);
                 var propertyName = matchResult.Groups[1].Value;
                 var condition = matchResult.Groups[2].Value.GetEnumValue<FilterCondition>();
                 var propertyValue = matchResult.Groups[3].Value;
-                employees = employees.DynamicFilter(propertyName, propertyValue, condition);
+                list = list.DynamicFilter(propertyName, propertyValue, condition);
             }
 
             // Check if possible to do dynamic order
             if (!string.IsNullOrEmpty(request.Order))
             {
-                // Do ordering of employees
+                // Do ordering of data
                 var matchResult = ValidateRegexPattern(request.Order, RegexPattern.ORDER_PATTERN);
                 var propertyName = matchResult.Groups[1].Value;
                 var condition = matchResult.Groups[2].Value.GetEnumValue<OrderCondition>();
-                employees = employees.DynamicOrder(propertyName, condition);
+                list = list.DynamicOrder(propertyName, condition);
             }
 
             // Get pagination details
-            totalItems = employees.Count();
+            totalItems = list.Count();
             totalPages = (int)Math.Ceiling(totalItems / (double)request.PageSize);
 
-            // Do pagination of employees
-            var result = employees.Skip((request.PageNumber - 1) * request.PageSize)
-                                  .Take(request.PageSize)
-                                  .Select(data => _mapper.Map<TDto>(data))
-                                  .ToList();
+            // Do pagination of data
+            var result = list.Skip((request.PageNumber - 1) * request.PageSize)
+                             .Take(request.PageSize);
 
             return result;
         }
